@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>hello world!</title>
+<style>
+* {margin:0; padding:0}
+li {list-style: none}
+body {padding:50px;}
+
+.wrap {
+	width:90.196078%; /* 920 / 1020 */
+	margin:0 auto; 
+	background-color:lime; 
+	height: 500px;
+}
+.tab_menu {
+	border:2px solid black; 
+	width:54.130435%; /* 498 / 920 */
+	margin:0 auto;
+	overflow: hidden;
+	min-width: 400px;
+}
+.tab_menu > li > a {
+	position: relative;
+	float:left; 
+	width: calc( (100% - 8px) / 5) ; /* 98 / 498 */
+	background-color: #999; 
+	line-height: 50px; 
+	text-align: center;
+	color:white;
+	text-decoration-line: none;
+}
+.tab_menu > li + li > a {
+	margin-left:2px;
+}
+.tab_menu > li.on > a {background-color:blue}
+.tab_content > div {
+	display: none;
+	margin:20px;
+	padding:20px;
+	background-color:blue;
+	color:white;
+	font-size:18px;
+}
+.tab_content > div.on {
+	display: block;
+	height: 300px;
+}
+
+</style>
+
+</head>
+<body>
+<div class="wrap">
+	<ul class="tab_menu">
+		<li class="school on"><a href="">학교</a></li>
+		<li class="park"><a href="">공원</a></li>
+		<li class="play"><a href="">놀이터</a></li>
+		<li class="home"><a href="">집안</a></li>
+		<li class="office"><a href="">사무실</a></li>
+	</ul>
+	<div class="tab_content">
+		<div class="school on">학교 내용</div>
+		<div class="park">공원 내용</div>
+		<div class="play">놀이터 내용</div>
+		<div class="home">집안 내용</div>
+		<div class="office">사무실 내용</div>
+	</div>
+</div>
+<script>
+
+// * 이벤트리스너를 .tabmenu에만 걸어서 작업하시오.
+// 1. 같은 클래스 네임으로 매칭 하기
+// 설명 : 탭을 클릭하면 해당하는 tab_content 클래스 네임에 on이 생겨서 해당 내용만 보이도록 하세요.
+
+//준비
+// 1. 감지장치를 붙인다.
+// 2. 클릭이 일어나는 애가 누군지 알아낸다.
+// 3. 해당 li에 클래스 이름을 저장하고 걔한테 on을 준다.
+// 4. 저장한 이름과 똑같은 이름을 contents에서 찾는다.
+// 5. 걔한테 on을 준다.
+
+var tabMenu = document.querySelector(".tab_menu");
+var tabMenuList = tabMenu.querySelectorAll("li");
+var tabContentDivs = document.querySelectorAll(".tab_content > div");
+
+// 1. 감지장치를 붙인다.
+tabMenu.addEventListener('click', clickWork); 
+//리스너)포문 안돌리고 버블링,캡쳐링의 원리로 그냥 ul하나에만 리스너를 붙일거야.
+
+// 2. 클릭이 일어나는 애가 누군지 알아낸다.
+function clickWork(e){ //리스너)e가 클릭한 특정 요소를 하나 잡아주겠지. 그 특정 요소는 e.target이다.
+	e.preventDefault();
+	if(e.target.tagName !== 'A'){
+		return //A가 아니면 함수 종료. 즉 A일 때만 일할 것 임. (nodeValue나 tagName은 모두 대문자로)
+	}
+	for(let i = 0; i < tabMenuList.length ; i++){
+		tabMenuList[i].classList.remove('on');
+		tabContentDivs[i].classList.remove('on');
+	}//어디에 달려있는지 모를 먼저 달린 'on'을 싹 다 지워준다. 
+
+
+	// 3. 해당 li에 클래스 이름을 저장하고 걔한테 on을 준다.
+	const currentName = e.target.parentNode.className;
+	e.target.parentNode.classList.add('on');
+	console.log(currentName); 
+	// 4. 저장한 이름과 똑같은 이름을 contents에서 찾는다.
+	// for(let i = 0; i < tabContentDivs.length ; i++){
+	// 	if(tabContentDivs[i].classList.contains(currentName)){
+	//		// 5. 걔한테 on을 준다.
+	// 		tabContentDivs[i].classList.add('on');
+	// 	}
+	// }
+	//를 함축한 내용. 
+	// document.querySelector('.tab_content > .'+ currentName).classList.add('on');
+	document.querySelector(`.tab_content > .${currentName}`).classList.add('on');
+}
+
+
+
+// 내가한거. => ,on을 다 떼고 시작해서 다시 on붙이고 미리있던 on을 다 삭제해줘야함..;ㅂ;
+// for(let i = 0 ;i < tabMenuList.length; i++){
+// 	tabMenuList[i].addEventListener('click', function(e){
+// 		console.log(e.target)
+// 		e.preventDefault();
+// 		for(let i = 0 ;i < tabMenuList.length; i++){
+// 			if(e.target.parentElement.className === tabContentDivs[i].className){
+// 				console.log(tabMenuList[i].className);
+// 				tabContentDivs[i].classList.add('on');
+// 			}else{
+// 				tabContentDivs[i].classList.remove('on');
+// 			}
+// 		}
+// 	});
+// }
+
+
+// 윤정언니가한거.
+// tabMenu.addEventListener('click',function(e){
+// 	e.preventDefault();
+
+// 	var tgtName = e.target.parentElement.className;
+// 	e.target.parentElement.classList.add('on');
+
+// 	//컨텐츠 on
+// 	for (let i = 0 ; i < tabContentDivs.length ; i++){
+// 		if (tabContentDivs[i].classList.contains(tgtName)){
+// 			tabContentDivs[i].classList.add('on');
+// 		} else {
+// 			tabContentDivs[i].classList.remove('on');
+// 			tabMenuList[i].classList.remove('on');
+// 		}
+// 	}
+// });
+
+
+</script>
+</body>
+</html>

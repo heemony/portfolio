@@ -78,8 +78,109 @@ body {padding:50px;}
 //준비
 var tabMenu = document.querySelector(".tab_menu");
 var tabMenuLis = tabMenu.querySelectorAll("li");
+var tabMenuAs = tabMenu.querySelectorAll("li > a");
 var tabContentDivs = document.querySelectorAll(".tab_content > div");
 
+
+
+
+
+
+
+
+//3번 방법. var와 let의 차이 그리고 클로저 
+// for(let i = 0; i < tabMenuAs.length; i++){
+// 	tabMenuAs[i].onclick = (function (j) {
+// 		return function(e){
+// 			e.preventDefault();
+// 			for(let i = 0 ; i < tabMenuLis.length ; i++){
+// 				tabMenuLis[i].classList.remove('on');
+// 				tabContentDivs[i].classList.remove('on');
+// 			}
+// 			this.parentNode.classList.add('on');
+// 			tabContentDivs[j].classList.add('on');
+// 		}
+
+// 	})(i);
+// 	// 클로저
+// 	// 즉시 실행문을 쓴거임 이거는 var를 쓴것과 달리 실행하는 순간을 잡아다가 i를 출력.
+// 	// 할당대신 실행먼저 된다고 해서 즉시 실행문.
+// 	// j에다가 i값 하나하나씩 저장해둘거라고 즉시 실행문을 쓴거.
+// 	// 리턴값을 온클릭에게 돌려주면서 저장하게 되는데 이런 비스무리한 개념을 클로저라고 함.
+
+
+// 	//  var와 let의 차이 
+// 	//	var일 경우에 i를 0~4까지 '할당'을 하고 5가 되면 멈춘다. (조건문땜시), 
+// 	//	온클릭을 할 경우 function이 실행되면서 i는 5가 된다.
+// 	//	포문이 도는 중간에 i를 잡아다가 콘솔찍는게 아니라는 것 임.
+
+// 	// 	let은 꼬부랑괄호 앞을 기준으로 하나의 메모리 공간이 존재한다고 생각할 수 있다.
+// }
+
+// 		//var a = function() {}
+// 		//a() 
+// 		// => 합쳐서 이름없이 실행해보자. IIFE 이름없는 즉시 실행 항수문
+// 		var a = (function() {
+// 			return function(){}
+// 		})()
+// 		//a에는 함수문을 '실행해서' 반환값을 담은거임.
+
+
+
+
+//2번 방법. 
+// tabMenu.addEventListener('click', clickWork);
+// function clickWork(e){
+// 	e.preventDefault(); //새로고침 방지
+// 	if(e.target.tagName !== 'A') return; //타겟이 여럿이 있으니까 A만 골라낸다.
+// 	for(let i = 0 ; i < tabMenuLis.length ; i++){
+// 		tabMenuLis[i].classList.remove('on');
+// 		tabContentDivs[i].classList.remove('on');
+// 	} //달려있는 on다 지우기.
+// 	e.target.parentNode.classList.add('on');
+// 	console.log(e.target.parentNode)
+// 	var realLis = Array.from(tabMenuLis) // 진짜 배열로 바꾼다.
+// 	var crrIndex = realLis.indexOf(e.target.parentNode); //클릭한 애의 li번호 획득.
+// 	tabContentDivs[crrIndex].classList.add('on');
+// }
+
+
+
+// 1번 방법.
+// 1) 순서라는 항목의 정보를 집어넣는다.
+// for(let i = 0 ; i < tabMenuLis.length ; i++){
+// 	tabMenuLis[i].순서 = i; //순서를 기록해두는 것이 핵심 아이디어였다~~~
+// }
+// tabMenu.addEventListener('click', clickWork);
+
+// function clickWork(e){
+// 	e.preventDefault();
+
+// 	if(e.target.tagName !== 'A') return; 
+
+// 	for(let i = 0 ; i < tabMenuLis.length ; i++){
+// 		tabMenuLis[i].classList.remove('on');
+// 		tabContentDivs[i].classList.remove('on');
+// 	}
+// 	var a = e.target.parentNode.순서;
+// 	e.target.parentNode.classList.add('on');
+// 	tabContentDivs[a].classList.add('on');
+// }
+
+
+
+
+
+
+// function cbtn(e){
+// 	e.preventDefault();
+// 	console.log(e.target)
+// 	for(let i = 0; i < tabMenuLis.length; i++){
+// 		if(Object.keys.tabMenuLis[i] === Object.keys.tabContentDivs[i]){
+// 			tabContentDivs[i].classList.add('on');
+// 		}
+// 	}
+// }
 
 
 

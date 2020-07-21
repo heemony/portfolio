@@ -73,9 +73,67 @@ body {padding:50px;}
 // * onclick 이벤트리스트너를 이용하세요.
 // * https://raw.githubusercontent.com/eulsoo/ud/066c431b54d2ee2cf26a1fb8db82b4b0664e3aa5/js_level1/tab_5_data.json를 사용하세요.
 // 7. 탭이름과 탭내용을 json파일에 있는 것으로 만드시오.
+const dataUrl = 'https://next.json-generator.com/api/json/get/4JhufOJeF';
+const reqObj = new XMLHttpRequest();
+reqObj.open('GET', dataUrl);
+reqObj.responseType = 'json';
+reqObj.send();
+reqObj.onload = function(){
+	const eulsooData = reqObj.response;
+	tabmenu(eulsooData);
+}
+
+function tabmenu(myData){
+	console.log(myData)
+	// console.log(myData.tabItems[0].itemColor);
+	// 준비
+	var tabMenu = document.querySelector(".tab_menu");
+	var tabMenuLis = tabMenu.querySelectorAll("li");
+	var tabMenuAs = tabMenu.querySelectorAll("li > a");
+	var tabContentDivs = document.querySelectorAll(".tab_content > div");
 
 
-// 데이터 준비
+	for(let i = 0; i < tabMenuAs.length; i++){
+		tabMenuAs[i].textContent = myData.tabItems[i].itemName;
+		tabContentDivs[i].textContent = myData.tabItems[i].itemContent;
+	}
+
+
+
+	tabMenu.addEventListener('click', clickWork);
+	tabMenuLis[0].children[0].style.backgroundColor = myData.tabItems[0].itemColor;
+	tabContentDivs[0].style.backgroundColor = myData.tabItems[0].itemColor;
+
+	function clickWork(e){
+		e.preventDefault();
+		if(e.target.tagName !== "A") return;
+
+		for(var i = 0; i < tabMenuLis.length; i++){
+			tabMenuLis[i].classList.remove('on');
+			tabContentDivs[i].classList.remove('on');
+			tabMenuLis[i].children[0].style.backgroundColor ='';
+			tabContentDivs[i].style.backgroundColor = '';
+		}
+
+		var realLis = Array.from(tabMenuLis);
+		var crrIndex = realLis.indexOf(e.target.parentNode); 
+		var setColor = myData.tabItems[crrIndex].itemColor;
+
+		tabMenuLis[crrIndex].children[0].style.backgroundColor = setColor;
+		tabMenuLis[crrIndex].classList.add('on')
+		tabContentDivs[crrIndex].style.backgroundColor = setColor;
+		tabContentDivs[crrIndex].classList.add('on');
+	}
+	// 데이터 준비
+	
+		// var txts = ['학교', '공원', '놀이터', '집안', '사무실']
+		// var txtLis = document.createTextNode(txts);
+		// for(let = j; j < txts.length ; j++){
+		// 	tabMenuLis[j].children[j].appendChild(txtLis);
+		// }
+}
+
+
 
 // 노드 준비
 

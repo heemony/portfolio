@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>hello world!</title>
+<title>뷰를 이용하지 않고 썡자바스크립트로</title>
 <style>
 * {margin:0; padding:0}
 li {list-style: none}
@@ -66,9 +66,10 @@ body {padding:50px;}
 		<div>공원 내용</div>
 		<div>놀이터 내용</div>
 		<div>집안 내용</div>
-		<!-- <div>사무실 내용</div> -->
+		<div>사무실 내용</div>
 	</div>
 </div>
+<script src="tab_5_data.js"></script>
 <script>
 // * onclick 이벤트리스트너를 이용하세요.
 // * tab_5_data.js를 사용하세요.
@@ -76,20 +77,97 @@ body {padding:50px;}
 //    컨텐츠의 배경색이 같은색으로 바뀌도록 만드세요. 
 tabmenu();
 function tabmenu() {
-
+	console.log(tabData.tabItems[0].itemColor);
 	// 준비
 	var tabMenu = document.querySelector(".tab_menu");
 	var tabMenuLis = tabMenu.querySelectorAll("li");
 	var tabContentDivs = document.querySelectorAll(".tab_content > div");
-	var tabMenuDefaultColor = document.querySelector(".tab_menu > li > a").style.backgroundColor;
-	var tabContentDefaultColor = document.querySelector(".tab_content > div").style.backgroundColor;
+	tabMenu.addEventListener('click', clickWork);
+	tabMenuLis[0].children[0].style.backgroundColor = tabData.tabItems[0].itemColor;
+	tabContentDivs[0].style.backgroundColor = tabData.tabItems[0].itemColor;
 
-	// 확인
-	
+	function clickWork(e){
+		e.preventDefault();
+		if(e.target.tagName !== "A") return;
 
-	// 코드
-	
+		for(var i = 0; i < tabMenuLis.length; i++){
+			tabMenuLis[i].classList.remove('on');
+			tabContentDivs[i].classList.remove('on');
+			tabMenuLis[i].children[0].style.backgroundColor ='';
+			tabContentDivs[i].style.backgroundColor = '';
+		}
+
+		var realLis = Array.from(tabMenuLis);
+		var crrIndex = realLis.indexOf(e.target.parentNode); 
+		var setColor = tabData.tabItems[crrIndex].itemColor;
+
+		tabMenuLis[crrIndex].children[0].style.backgroundColor = setColor;
+		tabMenuLis[crrIndex].classList.add('on')
+		tabContentDivs[crrIndex].style.backgroundColor = setColor;
+		tabContentDivs[crrIndex].classList.add('on');
+			
+	}
+
+
+
+	// for (let i = 0; i < tabMenuLis.length; i++) {
+	// 		tabMenuLis[i].children[0].onclick = (function (j) {
+	// 			return function (e) {
+	// 				e.preventDefault();
+	// 				var tabColor = tabData.tabItems[i].itemColor;
+	// 				for (let i = 0; i < tabMenuLis.length; i++) {
+	// 					if (tabMenuLis[i].classList.contains('on')) {
+	// 						tabMenuLis[i].classList.remove('on');
+	// 						tabContentDivs[i].classList.remove('on');
+	// 						tabMenuLis[i].firstChild.style.backgroundColor = '';
+	// 						tabContentDivs[i].style.backgroundColor = '';
+	// 					}
+
+	// 				}
+	// 				console.log(tabColor);
+	// 				this.parentNode.classList.add('on');
+	// 				tabContentDivs[j].classList.add('on');
+	// 				this.style.backgroundColor = tabColor;
+	// 				tabContentDivs[j].style.backgroundColor = tabColor;
+	// 			}
+	// 		})(i);
+	// 	}
+
+
+
+
+
+
+
+
+	// for(let i = 0 ; i < tabMenuLis.length ; i++){
+	// 	tabMenuLis[i].order = i; 
+	// }
+	// tabMenu.addEventListener('click', clickWork);
+
+	// function clickWork(e){
+	// 	e.preventDefault();
+
+	// 	if(e.target.tagName !== 'A') return; 
+
+	// 	for(let i = 0 ; i < tabMenuLis.length ; i++){
+	// 		tabMenuLis[i].classList.remove('on');
+	// 		tabContentDivs[i].classList.remove('on');
+	// 	}
+	// 	var a = e.target.parentNode.order;
+	// 	e.target.parentNode.classList.add('on');
+	// 	tabContentDivs[a].classList.add('on');
+
+	// 	for(let i = 0 ; i < a.length ; i++){
+	// 		if(tabMenuLis[i] === tabContentDivs[i]){
+	// 			tabMenuLis[i].children[i].style.background = tabData.tabItems[i].itemColor
+	// 			tabContentDivs[i].style.background = tabData.tabItems[i].itemColor
+	// 		}
+	// 	}
+	// }
+
 }
+
 
 
 

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>hello world!</title>
+<style>
+a {color:black}
+* {margin:0; padding:0}
+body {font-family: Georgia}
+li {list-style: none}
+header {background-color:black; height: 60px; padding:40px 20px 0}
+.btn {display: none;}
+.menu a {text-decoration-line: none;  }
+.menu > ul {max-width: 800px; margin:0 auto; text-align: justify; font-size:0;  zoom:1; line-height: 0;}
+.menu > ul:after {content:""; width:100%; display: inline-block; vertical-align: top;}
+.menu > ul > li {display:inline-block; font-size:16px; line-height: 1.2; vertical-align: top;}
+.menu > ul > li > a {text-transform: uppercase; color:white; background-color:gray; padding-bottom:41px; display: block;}
+.menu > ul > li > ul {display: none; position:absolute; left:0; right:0; background-color:#ededed; padding:50px; top:100px; text-align:center }
+.menu > ul > li.active > ul {display: block; }
+.menu > ul > li > ul > li {display: inline-block; text-align: left; vertical-align: top; margin:0 20px;}
+.menu > ul > li > ul > li > a {font-size: 18px; font-weight:bold }
+.menu > ul > li > ul > li > ul > li {margin:10px 0;}
+
+@media screen and (max-width: 768px) {
+body {background-color:yellow;}
+.btn {position: fixed; display:block; left:40px; top:10px; z-index: 100; width:30px; height:30px; text-indent:-9999px; }
+header {background-color:transparent; }
+header .btn:before {content: ''; position:absolute; left:0; top:8px; display: inline-block; width:30px; height:2px; background-color:rgb(212, 212, 212);}
+header .btn:after {content: ''; position:absolute; right:0; bottom:8px; display: inline-block; width:30px; height:2px; background-color:rgb(212, 212, 212);}
+header.active .btn:before {top:15px; transform: rotate(-45deg); }
+header.active .btn:after {bottom:13px; transform: rotate(45deg); }
+
+header .menu {height:50px; overflow: hidden; position:fixed; top:0; left:0; right:0; bottom:0; background-color:black;}
+header.active .menu {height:auto; }
+.menu > ul {margin:50px 40px;}
+.menu > ul > li {display: block; border-bottom:1px solid #333;}
+.menu > ul > li > a {letter-spacing:2px; background-color: transparent; padding-bottom: 0; padding:15px 0; position: relative; }
+.menu > ul > li.sub > a:before {content:""; position: absolute; top:25px; right:0; width:10px; border-bottom:1px solid rgb(212, 212, 212); transform:rotate(-45deg)}
+.menu > ul > li.sub > a:after {content:""; position: absolute; top:25px; right:7px; width:10px; border-bottom:1px solid rgb(212, 212, 212); transform:rotate(45deg)}
+.menu > ul > li.sub.active > a:before {transform:rotate(45deg)}
+.menu > ul > li.sub.active > a:after {transform:rotate(-45deg)}
+.menu > ul > li > ul {position: static;}
+.menu > ul > li.active > ul {display:block;  padding: 0; background-color: transparent; border-top:1px solid rgb(212, 212, 212)}
+.menu > ul > li.active > ul > li {display: block;}
+.menu > ul > li.active > ul > li > a {padding:10px 0; display: block; color:#999; font-weight: normal; font-size:16px;}
+} /* 768px media end */
+
+</style>
+
+</head>
+<body>
+<div class="wrap">
+	<header class="active"> <!-- "active" : 모바일 메뉴 열렸을 때 -->
+		<a href="" class="btn">전체메뉴</a>
+		<nav class="menu">
+			<ul>
+				<li> <!-- "sub" : 하위메뉴가 있을때, "active" : 하위 메뉴 열림 -->
+					<a href="">coffee</a>
+					<ul>
+						<li><a href="">스타벅스 원두</a></li>
+						<li><a href="">스타벅스 비아</a></li>
+						<li><a href="">스타벅스 오리가미</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="">menu</a>
+					<ul>
+						<li><a href="">콜드 브루</a></li>
+						<li><a href="">브루드 커피</a></li>
+						<li><a href="">에스프레소</a></li>
+						<li><a href="">프라푸치노</a></li>
+						<li><a href="">블랜디드</a></li>
+						<li><a href="">스타벅스 피지오</a></li>
+					</ul>
+				</li>
+				<li><a href="">store</a></li>
+				<li><a href="">responsibility</a></li>
+				<li><a href="">my starbucks rewards</a></li>
+				<li><a href="">what's new</a></li>
+			</ul>
+		</nav>
+	</header>
+</div>
+<script>
+// * html을 수정하지 마세요.
+// * .menu에 리스너를 걸어서 버블링을 이용하세요.
+// * 768이상에서 작동하는 마우스오버 메뉴를 만드세요.
+// * 처음 로드되면 서브메뉴가 있는지를 확인하고 있는 li에는 
+//   자동으로 "sub" 클라스네임이 붙도록 하는 서브메뉴 체크 함수를 만드세요.
+
+
+
+// 노드 준비
+const $nav = document.querySelector('.menu');
+const $lis = $nav.querySelectorAll('.menu > ul > li');
+
+for (let i = 0; i < $lis.length; i++){
+	if($lis[i].querySelector('ul')){//만약에 li안에 ul이 있으면
+		$lis[i].className = 'sub';
+	}
+}
+
+// $lis.forEach(function(item, i, a, $lis){//조건 안줘도 자동으로 훑는애 
+// // console.log(item); //li전체
+// // console.log(i); //숫자
+// // 세번째는 .앞
+// // 네번 째는 내가 정하고 싶은 this로 정해줌
+// // 순서대로 그냥 약속된 값 
+
+// 	if(item.querySelector('ul')){ //몇 번 li라고 안해도 저절로 그 안에 있는 li다 훑어줌
+// 		item.className = 'sub';
+// 	}
+// });
+//쥐어주는 함수를 콜백함수라고 부른다
+//addeventlisten처럼 쥐어준다
+
+$nav.addEventListener('mouseover', overWork);
+$nav.addEventListener('mouseout', outWork);
+
+let openedMenu; //열렸던 메뉴
+function overWork(ev){
+	if(ev.target.tagName !== 'A') return;
+	console.log('over!');
+	let crrli = ev.target.parentNode; //a의 부모 li : 메뉴 + 하위메뉴
+	let subMenu = crrli.querySelector('ul'); //하위메뉴ul
+	if(subMenu){
+		crrli.classList.add('active'); //li에 액티브 추가 (ul의 부모임)
+		openedMenu = subMenu;
+		console.log(crrli)
+	}
+}
+
+function outWork(ev){
+	console.log('out!');
+	if (!openedMenu) return; 
+	// out은 다 일어나는데 opened menu가 열리기 전에도(opened menu는 a에만 열리기 때문에 바깥에서 a전까지 마우스 오버하면 안열린 상태임) 
+	// 근데 그 때도 out은 일어나기 때문에 undefined의 부모를 못찾기 때문에 오류가 일어나는데 그래서
+	//열리기 전에는 openedMenu의 parentnode를 못찾는 오류를 해결하기 위해서 out을 아직 실행하지 말고 함수 나가라고 쓴다
+	if(!foldInCheck()){//담겼는지 확인하는 함수 //내 가족일 때 active를 제거하지 말아라(닫지말아라)
+		openedMenu.parentNode.classList.remove('active');
+	}
+
+	function foldInCheck(){
+		//도착한 곳(마우스 있는 곳)이 열렸던 곳(active해서 생긴 하위메뉴)(returen true)이라면 내 가족이니까(li의 가족) 닫지 마라
+
+		let moveTo = ev.relatedTarget; //도착한 곳(마우스 있는 곳)
+		//그냥 target은 사건이 발생한 곳 그러니까 a라고 할 수 있음. 
+		//relatedTarget은 mouse가 out 됐을 때 도착한 곳.
+		if (!moveTo) return; //도착한 곳이 없으면 함수 끝내라
+		while(moveTo.tagName !== 'HTML'){
+			if(openedMenu === moveTo){
+				return true;
+			}
+			moveTo = moveTo.parentNode; //비교한게 도착한 곳과 열렸던 곳과 다르다면 똑같을 때 까지 부모로 올라가서 비교
+		}
+	
+		//도착한 곳이 열렸던 메뉴가 아니라면(returen false) 내가족이 아니니까 닫아라
+		return false;
+	}
+}
+
+
+
+
+</script>
+</body>
+</html>

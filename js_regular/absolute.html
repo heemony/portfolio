@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .mother{
+            position: relative;border: 10px solid rgba(78, 22, 22, 0.157); 
+            width: 70%;height: 300px;
+            overflow: hidden;
+        }
+        .mother > img{
+            position: absolute;
+            left: 50%;
+            /* margin-left: -453px; */
+            top: 50%;
+            /* margin-top: -326.5px; */
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            z-index: 99999;
+        }
+        .mother > .son{
+            position: absolute;
+            /* 가운데정렬 1번*/
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            right: 0;
+            bottom: 0;
+            width: 30%;
+            height: 30%;
+            background-color: aquamarine;
+
+            /* 가운데정렬 2번 
+            margin: auto; */
+
+            /* 가운데정렬 3번 
+            left: 50%;
+            margin-left: -50px;
+            top: 50%;
+            margin-top: -50px;
+            */
+        }
+        .fix{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.452);
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="mother">
+        <!-- <div class="son"></div> -->
+        <img src="img2.png" alt="">
+    </div>
+    <div class="fix"></div>
+</body>
+</html>

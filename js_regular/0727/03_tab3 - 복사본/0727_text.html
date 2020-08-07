@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var obj = {};
+        // var obj = {};와 var obj = new Object();는 완전히 같다.
+
+        function 운송기(a, b, c, d){
+            this.창문 = a;
+            this.바퀴 = b;
+            this.엔진 = c;
+            this.엑셀 = d;
+        }
+        운송기.prototype.전진하기 = function(){
+            console.log('전진한다~~!~!!~!~!!!');
+        }
+        운송기.prototype.후진하기 = function(){
+            console.log(this + '후진하는 중~~~');
+        }
+        운송기.prototype.주차하기 = function(){
+            console.log('주차하는 중~~~');
+        }
+
+
+        var 자동차 = new 운송기(4, 4, 1, 1);
+        var 비행기 = new 운송기(30, 2, 3, 1);
+
+        자동차.전진하기()
+        비행기.후진하기()
+        console.log(자동차);
+    </script>
+</body>
+</html>

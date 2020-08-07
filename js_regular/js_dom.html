@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="service1">
+        <h2>차량 서비스</h2>
+        <ul title="인기자동차" class="을수"> <!--title : 구글이나 시각장애인들이 알 수 있도록 제공하는 역할-->
+            <li>세차</li>
+            <li>주유</li>
+            <li>소모품교체</li>
+            <li>세차</li>
+            <li>주유</li>
+            <li>소모품교체</li>
+            <li>세차</li>
+            <li>주유</li>
+            <li>소모품교체</li>
+        </ul>
+    </div>
+
+    <div id="service2">
+		<h2>차량 서비스</h2>
+		<ul title="리스트">
+			<li><a href="http://eulsoo.com">을수</a></li>
+			<li><a href="http://naver.com">네이버</a></li>
+			<li><a href="http://daum.com">다음</a></li>
+			<li><a href="http://kakao.com">카카오</a></li>
+            <li><a href="http://google.com">구글</a></li>
+            <!--
+                properties 에서 childNodes를 보면 a뭉치하나에 또 안에 text도 있어
+                개행을 없애면(스페이스바로) text 값이 사라지게 됨. text의 정체는...
+                text = ""; <-빈칸!
+            -->
+        </ul>
+	</div>
+    <a href="#" class='point'>클릭</a> <!--a href="#" 이 없이 빈칸이면 새로고침이 일어남-->
+
+<script>
+    /////////////////////클릭 버튼 - 이벤트 객체 (상황의 정보를 모아서 주는 객체)/////////////////////
+    const aBtn = document.querySelector('.point'); //const는 프라이빗한 선언명임.window에서 const는 볼 수 없다. (let은 코드 블럭단위)
+    aBtn.addEventListener('click', work);
+    
+    function work(e){
+        //alert('glglglg');
+        e.preventDefault(); //a href="#" 를 안했을때, 제일 상단으로 페이지가 이동하게 되는 것을 막는다. 새로고침기능 꺼줌.
+        console.log(e.type); // 현재 일어난 이벤트를 알 때 .type
+        console.log(e);
+    };
+    //아무것도 쓰지 않으면 초깃값은 버블링. 무언가를 붙이면 캡쳐링
+ 
+
+
+    // 함수의 2가지 
+    // aBtn.addEventListener('click', function work(){}); -> function앞에 무언가가 있으면 '리터럴' 미리 준비되지 않는 함수. 
+    // function work(){} -> function앞에 아무것도 없으면 미리 준비되는 '선언형' 함수. 실행문이 위에 있어도 상관이 없다.
+    // 그리고 두개의 work함수 완전히 다른 함수이다.
+
+
+    // /////////////////////SERVICE2 - 정보뭉치 찾아오기(textcontent로 안될 때 쓴다.)////////////////////////
+    // var blank = []; //배열
+
+    // // a정보뭉치 찾아놓기.
+    // var aElems = document.querySelectorAll('#service2 a');
+    // var ulElem = document.querySelector('#service2 ul');
+    // var liElems = ulElem.querySelectorAll('li');
+
+    // console.log(ulElem.firstChild); // #text : 개행이 나온다. 내가 원하는게 아님.
+    // console.log(ulElem.firstChild.nextSibling); //첫번쨰 li가 잘 나온다.
+    // //              ul > 첫번째자식 > li
+    // console.log(ulElem.firstChild.nextSibling.nodeType); // 1
+    // console.log(ulElem.childNodes[2].nodeType === 1); 
+    // console.log(liElems[0].childNodes[0].childNodes[0].nodeValue); // 결과 ) 을수
+    // //              li    >      a      >  텍스트노드 > 항목이름  
+
+
+    // //nodeType
+    // for(let i = 0; i < ulElem.childNodes.length ; i++){ //let은 블록단위 선언명이라 let i 를 쓰면 좋다.
+    //     if (ulElem.childNodes[i].nodeType === 1){
+    //         blank.push(ulElem.childNodes[i]);
+    //         //push는 무조건 순서대로 담아준다.
+    //         //몇번방인지 모를 경우, 순서대로 넣을 경우에 push
+    //     }
+    // }
+    // console.log(blank[0].nodeType);
+
+    // //nodeName
+    // for(let i = 0; i < ulElem.childNodes.length ; i++){ //let은 블록단위 선언명이라 let i 를 쓰면 좋다.
+    //     if (ulElem.childNodes[i].nodeName === 'LI'){
+    //         blank.push(ulElem.childNodes[i]);
+    //         //push는 무조건 순서대로 담아준다.
+    //         //몇번방인지 모를 경우, 순서대로 넣을 경우에 push
+    //     }
+    // }
+    // console.log(blank[0].nodeName);
+
+
+    // //document.write로 html태그를 넣을 수 있따.
+    // //  document.write('<p>document.write로 html태그를 넣을 수 있따.</p>');
+
+    // //innerHTML로 뭉탱이 바꾸기
+    // // ulElem.innerHTML = '';
+
+
+
+    // // -createChild 와 appendchild로  "ul밑에" li만들기.
+    // var newLi = document.createElement('li'); 
+    //     // newLi.textContent = '우왕 새로생겼어~'; 
+    //     // 1) textContent는 이 상황에서 li밑에 text노드를 만들어서 붙이는 기능을 하는 함수이다.
+
+    //     // --> textcontent가 안 될 때에는 createTextNode를 이용한다.
+    // var newText =document.createTextNode('gldglgldgld');
+    //     // 2) createTextNode는 
+    //     // -> text 노드를 만들어서 'gldglgld'을 만들어서
+    // newLi.appendChild(newText); 
+    //     // -> li 밑에다가 만든 'fgldgldgld'을 붙인다.
+    // ulElem.appendChild(newLi);
+
+
+    // // SERVICE1의 li에 p붙이기. => 요거 다시 해보기.
+    //         var s1Lists = document.querySelectorAll('#service1 li');
+    //         var newP = document.createElement('p');
+    //         var newTxt = document.createTextNode(' 단돈 삼만원!');
+
+
+    //         newP.appendChild(newTxt);
+    //         s1Lists[0].appendChild(newP);
+    //         s1Lists[1].appendChild(newP);
+    //         s1Lists[2].appendChild(newP); //왜 따로따로 추가되지..?
+    
+    // // SERVICE1 밑에 p붙이기.
+    //         var s1 = document.querySelector('#service1');
+
+    //         var pElem = document.createElement('p');
+    //         var pText = document.createTextNode('asdfsdf');
+    //         pElem.appendChild(pText);
+    //         s1.appendChild(pElem);
+
+    // //
+
+
+
+    // /////////////////////SERVICE2 - 일반객체 프로퍼티와 속성값 주기.////////////////////////
+    // // 내정답 )
+    // var links = {}; //일반객체
+    // var nameLi = document. querySelectorAll('#service2 li')
+    // var linkList = document.querySelectorAll('#service2 a')
+    // //console.log(nameLi[0].innerText); //을수 - innerText보다는 textContent를 사용하는 것이 좋다. 원시 텍스트(raw text)이기 때문.
+    // //console.log(nameLi[1].innerText); //네이버   
+    // //console.log(linkList[0].href); // http://eulsoo.com
+    // //console.log(linkList[0].href); // naver
+
+    // for(k = 0; k<nameLi.length; k++){
+    //     links[nameLi[k].textContent] = linkList[k].href;
+    // }
+    // console.log(links);
+
+
+    // // 을쑤썜 정답 )
+    // // var aElem = docuemnt.querySelector('#service2 a');
+    // // var 이름 = aElem[0].textContent;
+    // // var 주소 = aElem[0].href;
+    // // for(k = 0; k < aElem.length; k++){
+    // //     links[aElem[k].textContent] = aElem[k].href;
+    // // }
+
+
+
+    // // children으로 가져오기.
+    //     // var ulChild2 = document.querySelectorAll('#service2 ul');
+    //     // for(var n = 0; n < ulChild2.length; n++){
+    //     //     var ulChild =ulChild2[n].children;
+    //     // }
+    //     // console.log(ulChild);
+
+
+    // /////////////////////SERVICE2 - 클래스명 추가////////////////////////
+    // // ul에 클래스명추가하기 set과 .className이용
+    // var ulElem2 = document.querySelector('#service2 ul');
+    // var ulClass = ulElem2.setAttribute('class', '클래스명추가');
+    // //또는 ulElem2.className = '클래스명추가';
+  
+
+    // //  console.log(liElem);
+    // //  liElem[0].className = 'list';
+
+    // // for문을 이용하여 li에 클래스명추가하기 
+    // var liElem = ulElem2.querySelectorAll('li');
+    // for(var j = 0; j < liElem.length; j++){
+    //     liElem[j].className = 'list';
+    // }
+    
+
+
+
+    // /////////////////////SERVICE2 - 배열을 만들어서 href값 넣기////////////////////////
+    // //a href를 저장할 배열을 만든다.
+    // var linkList = [];
+
+    // //a정보뭉치를 찾는다.
+    // var aElems = document.querySelectorAll('#service2 a')
+    // console.log(aElems); // 결과) NodeList(5) [a, a, a, a, a]
+
+    // //href 항목을 찾아서 linkList에 담는다.
+    // //  linkList[0] = aElems2[0].href;
+    // //  console.log(linkList[0]); 
+    // //  이 일련의 과정을 for문에 적용시킨다.
+
+    // //for문으로 바꾼다.
+    // for(var i = 0; i < aElems.length; i++){
+    //     linkList[i] = aElems[i].href;
+    // };
+    // console.log(linkList); // 결과) (5) ["http://eulsoo.com/", "http://naver.com/", "http://daum.com/", "http://kakao.com/", "http://google.com/"]
+    
+
+
+
+    /////////////////////SERVICE1 - css만들기, 객체, getAttribute, setAttribute////////////////////////
+    // var liElems = document.querySelectorAll('#service1 li')
+    // console.log(liElems);
+    // //노드를 다룰 떈 빼고,넣고를 자주 하기 때문에 일반객체를 사용하는 것이 효율적이다.
+    // //querySelectorAll : 유사배열 - 객체로 가져다준다.
+
+    // for(var i = 0; i < liElems.length; i++){
+    //     liElems[i].style.border = "2px solid red";
+    // }
+    // //liELems가 유사배열객체임을 이용하여 css그리기.
+
+    // var ulTitle = document.querySelector('#service1 ul')
+    // console.log(ulTitle.title); // 결과) 인기자동차
+    // //title에 적힌 텍스트 가져오기.
+
+    // var ulElem = document.querySelector('#service1 ul')
+    // var a = ulElem.getAttribute('title');
+    // var b = ulElem.getAttribute('class');
+    // ulElem.title = "변경";
+    // console.log(ulElem.title); // 결과) 변경
+    // console.log(a); // 결과) 인기자동차
+    // console.log(b); // 결과) 을수
+
+    // var c = ulElem.setAttribute('class', '클래스명추가');
+    // console.log(c); // 결과) undefined 
+    // //왜 c콘솔찍으면 undefined??? 
+
+    // /////////////////////SERVICE1 - css만들기 ////////////////////////
+    // var liElems2 = document.querySelectorAll('#service2 li');
+    // for(var i = 0; i < liElems2.length; i++){
+    //     liElems2[i].style.background = 'yellow';
+    // }
+</script>
+</body>
+</html>

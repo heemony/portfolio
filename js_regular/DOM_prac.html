@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom</title>
+</head>
+<body>
+    <div id="service2">
+        <h2>차량 서비스</h2>
+        <ul title="리스트">
+            <li><a href="http://eulsoo.com"> 을수 </a></li>
+            <li><a href="http://naver.com"> 네이버 </a></li>
+            <li><a href="http://daum.com"> 다음 </a></li>
+            <li><a href="http://kakao.com"> 카카오 </a></li>
+            <li><a href="http://google.com"> 구글 </a></li>
+        </ul>
+    </div>
+
+    <div id="service">
+        <h2>차량 서비스</h2>
+        <ul title="인기 서비스">
+            <li>세차</li>
+            <li>주유</li>
+            <li>소모품교체</li>
+        </ul>
+    </div>
+
+    <div class="mother" id="eulsoo">
+        <div class="box1">한라한라</div>
+        <div class="box2">머</div>
+    </div>
+
+    <ul id="photo_list">
+        <li><a href="#">
+        건물
+        </a></li>
+        <li><a href="#">
+        커피
+        </a></li>
+        <li><a href="#">
+        불꽃놀이
+        </a></li>
+        <li><a href="#">
+        장미
+        </a></li>
+    </ul>
+
+
+    <script>
+        var ulElem = document.querySelector("#photo_list");
+        ulElem.addEventListener("click", 할일);
+        function 할일(e){
+            console.log(e.target.text);
+        }
+        // //mother
+        // var eulsoo = document.getElementById("eulsoo");
+        // eulsoo.className = "ok";
+
+        //servie
+        // var getSev = document.getElementById("service");
+        // var sevLi = getSev.getElementsByTagName("li");
+        // console.log(getSev);
+        // console.log(sevLi);
+        // // for(let i = 0; i<sevLi.length; i++){
+        // //     sevLi[i].style.border = "1px solid red";
+        // // }
+        // var sevUl = getSev.getElementsByTagName("ul");
+        // //비록 하나의 태그지만 ul요소를 배열로 받아서 sevUl에 할당하였다.
+        // //배열이므로 sevUl[0]으로 ul노드객체를 선택.
+        // var listTitle = sevUl[0].getAttribute("title");
+        // console.log(listTitle);
+
+
+        // var emptyList = [];
+        // var getSev = document.getElementById("service2");
+        // var aElems = getSev.getElementsByTagName("a");
+        // for(let i = 0; i < aElems.length; i++){
+        //     emptyList[i] = aElems[i].getAttribute("href");
+        // }
+        // console.log(emptyList);
+
+        // var ulElems = getSev.getElementsByTagName("ul");
+        // ulElems[0].setAttribute("title", "gld");
+
+        // var getSev = document.querySelector("#service");
+        // var sevLi = getSev.querySelector("ul>li");
+        // var sevUl = getSev.querySelectorAll("ul[title] > li");
+        // console.log(getSev);
+        // console.log(sevLi);
+        // console.log(sevUl);
+
+        // var getSev = document.getElementById("service");
+        // var sevP = document.createElement("p");
+        // getSev.appendChild(sevP);
+        // var sevText = document.createTextNode("하이염ㅎㅎ");
+        // sevP.appendChild(sevText);
+    </script>
+</body>
+</html>

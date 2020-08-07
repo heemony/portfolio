@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <title>이벤트</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <style>
+        * {margin:0; padding:0}
+        li {list-style: none;}
+        aside {height:80px; background-color: aqua; text-align:center; line-height: 80px;}
+        header {position: static; background-color: gray; text-align: center;}
+        header.on {position: fixed; top:0; left:0; right:0; transition: top 0.5s linear;}
+        header.hide{ top:-80px; }
+        section {min-height: 100vh;}
+        section.num1 {background-color:lime; font-size: 40px; text-align: center;}
+        section.num2 {background-color:yellow; padding-top:1px}
+        section.num2 > p {margin-top:200px; opacity: 0; transition: all 0.5s ease;}
+        section.num2 > p.on {text-align:center; opacity: 1; font-size: 100px; transition: all 0.5s ease;}
+        section.num3 {background-color:pink; transition: all 0.5s ease;}
+        section.num3.on {background-color:green}
+        section.num3 > div {width:100px; height:100px; opacity: 0; background-color: black; transition: all 0.5s ease 1s;}
+        section.num3.on > div {opacity: 1; background-color: red;}
+        section.num4 {background-color:blue}
+        header nav {border:1px solid blue; display: inline-block;}
+        header nav > a {border:1px solid red}
+        body {border:10px solid black}
+
+        /* 메뉴 */
+        * {margin:0; padding: 0;}
+        li {list-style: none}
+        ul#photo_list {
+            border:2px solid lime; 
+            display: inline-block; 
+            padding: 10px;
+        }
+        ul#photo_list > li {
+            border:1px solid orange;  
+            float:left; 
+            padding: 10px; 
+            position: relative;
+        }
+        ul#photo_list > li > a {
+            border:1px solid black;
+            padding: 10px;
+        }
+        ul#photo_list > li > ul {
+            display: none; /*아래 모바일 버전에서 애니메이션 사용하는 경우에 display:none때문에 안먹힘. 주석 참고*/
+            background-color: yellow; 
+            position: absolute; 
+            top:40px; 
+            left:0; 
+            width: 100px;
+            padding: 10px;
+            z-index: 100;
+            border:1px solid lime;
+        }
+        ul#photo_list > li > ul.on{
+            display: block
+        }
+        ul#photo_list ul > li {
+            border:1px solid orange;
+            padding: 5px;
+        }
+        ul#photo_list ul > li > a {
+            text-decoration: none;
+            border:1px solid black;
+        }
+
+        .grandmom{
+            width: 568px; /*568px 기준*/  
+            height: 200px; 
+            background-color: rgb(255, 210, 127);  
+            margin: 0 auto;
+        }
+        .mother{
+            width: 73.9436%;/*430px/568*/ 
+            height: 200px; 
+            background-color: rgb(255, 127, 206); 
+            margin: 0 auto;
+        }
+        .mother > .son{
+            width: 74.285581%;/*312px/430*/ 
+            height: 100px; 
+            background-color: aquamarine; 
+            margin: 0 auto;
+        }
+
+        .col4{
+            width: 80%; /*800ox*/
+            margin: 0 auto;
+        }
+        .col4 > ul {
+            overflow: hidden;
+        }
+        .col4 > ul > li{
+            float: left;
+            width: 23.125%; height: 200px; background-color: teal; /*185/800*/
+        }
+        .col4 > ul > li+li{
+            margin-left: 2.5%; /*20/800*/
+        }
+
+
+    /* 0709 */
+        /* fix_col4구상. w800기준, 한쪽으로만 마진을 주면 떨어지는 경우에 한쪽이 이상해짐
+        그래서 양쪽으로 마진을 줘보자. => 음수마진!
+        상자는 25% ul은 전체 800을 삐져나온다. */
+
+        .fix_col4{
+            border: 1px solid rgb(255, 255, 255);
+            width:  80%; /*800px;*/
+            margin: 0 auto;
+        }
+        .fix_col4 > ul{
+            overflow: hidden;
+            width: calc(100% + 20px); /*양쪽으로 삐져나오는거 10씩 더해서 전체는 820px */
+            background-color: rgba(116, 116, 116, 0.356);
+            margin-left: -10px;
+        }
+        .fix_col4 > ul > li{
+            height: 200px; /* 부피주기 */
+            border: 1px solid rgb(255, 0, 255);
+            width: 25%;
+            box-sizing: border-box; /*보더포함하여 너비가 25%이다.*/
+            float: left; /*float줬으니 ul에 정신차리기*/
+            padding: 0 10px;
+        }
+        .fix_col4 > ul > li > img{
+            width: 100%;
+            height: 100%;
+        }
+
+        /* 420이하 */
+        @media screen and (max-width:420px) {
+            body {border:10px solid yellow;}
+            header nav{display:block;}
+            ul#photo_list {display: block;}
+            ul#photo_list > li{float: none; padding: 0;}
+            ul#photo_list > li > ul {
+                display: block; 
+                overflow: hidden; 
+                position: static;
+                width: auto;
+                max-height: 0;  
+                padding: 0; 
+                transition: all 0.5s linear;
+            }
+            ul#photo_list > li > ul.on {max-height: 200px;}
+            /* 
+            0709 - 
+            (애니메이션이 안먹는 코드 : 1. display:none 일 경우) *아래기존코드 참조.
+            ul#photo_list > li > ul {position: static; width: auto; padding: 0; height: 0;}
+            ul#photo_list > li > ul.on {height: 70px; transition: all 0.5s linear;}
+
+                이슈) 기본값 display: none에서 block으로 갈 때 애니메이션 안 먹힌다.
+                해결) 렌더트리에서 display none은 추가가 되지 않기 때문이지!(dom->cssom->렌더트리 : 이과정에서) 
+                    그래서 ul#photo_list > li > ul {display: block; overflow: hidden; } 이걸 해주면 
+                        => none이 렌더트리에 포함되지 않았으니까 기본값을 display:block으로 해줌.
+                        => block으로 인해 컨텐츠가 보이므로, overflow: hidden;하면 잘 숨겨짐(height가 0이기 때문).
+                        
+                        => padding은 상자안에 포함이 안되니까 padding:0으로 해줬음. (이 상황에서 padding이 있었기 때문)
+
+            (2. height: auto일 경우) 
+
+            */
+            ul#photo_list > li > a{display: block;}
+
+        }
+        /* 421이상 768이하 */
+        @media screen and (min-width:421px) and (max-width: 768px) {
+            body {border:10px solid red;}
+            .a {display: none;}
+            .fix_col4 > ul > li {width:33.3333%;} 
+        }
+        /* 769이이상 */
+        @media screen and (min-width:769px) {
+            body {border:10px solid blue;}
+            .b {display: none;}
+        }
+
+
+        .num1 .bx-wrapper{
+            border: none;
+        }
+
+        .num1 .bx-wrapper .bx-controls-direction a{
+            width: 40px;
+            height:100px;
+            border: 1px solid red;
+        }
+        .num1 .e_slide li{
+            float:none;
+            width: 300px;
+        }
+        .black{
+            background-color: black;
+        }
+        .white{
+            background-color: white;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <script>
+
+
+        // e_slide  
+        ///1) loadEvent : 로드가 다 되면 실행한다는 것. => jQuery(document)
+        $(document).ready(function(){
+            const liElems = document.querySelectorAll('.e_slide > li');
+            const target = document.querySelector('header')
+            console.log(liElems);
+
+            $('.e_slide').bxSlider({
+                auto: true,
+                pause: 2000,
+                slideWidth: '300px',
+                maxSlides: 4,
+                moveSlides: 1,
+                slideMargin: 10,
+                onSlideBefore: function(){
+                    var num = this.getCurrentSlide();
+                    console.log(num)
+                    setBg(num)
+                    
+                } //다음게 나오기 '전'에 쥐어준 함수가 실행된다.
+            });
+            function setBg(eulsoo){
+                target.style.backgroundColor = liElems[eulsoo].className;
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <aside>광고</aside>
+    <header class="on hide">
+        <nav>
+            <ul id="photo_list">
+                <li>
+                    <a href="">건물</a>
+                    <ul class="">
+                        <li><a href="">남산타워</a></li>
+                        <li><a href="">63빌딩</a></li>
+                        <li><a href="">남산타워</a></li>
+                        <li><a href="">63빌딩</a></li>
+                        <li><a href="">남산타워</a></li>
+                        <li><a href="">63빌딩</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">커피</a>
+                    <ul>
+                        <li><a href="">아메리카노</a></li>
+                        <li><a href="">카페라테</a></li>
+                        <li><a href="">코코넛라테</a></li>
+                        <li><a href="">더블샷바닐라라뗴</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="">불꽃놀이</a>
+                    <ul>
+                        <li><a href="">한강축제</a></li>
+                        <li><a href="">금강축제</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="" onclick="  ">장미</a>
+                    <!-- <ul>
+                        <li><a href="">백장미</a></li>
+                        <li><a href="">흑장미</a></li>
+                    </ul> -->
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <section class="num1">
+        <div >
+            <ul class="e_slide">
+                <li class="white"><img src="http://placehold.it/300x300"/></li>
+                <li class="black"><img src="http://placehold.it/300x300"/></li>
+                <li class="white"><img src="http://placehold.it/300x300"/></li>
+                <li class="black"><img src="http://placehold.it/300x300"/></li>
+                <li class="white"><img src="http://placehold.it/300x300"/></li>
+                <li class="black"><img src="http://placehold.it/300x300"/></li>
+                <li class="white"><img src="http://placehold.it/300x300"/></li>
+                <li class="black"><img src="http://placehold.it/300x300"/></li>
+                <li class="white"><img src="http://placehold.it/300x300"/></li>
+                <li class="black"><img src="http://placehold.it/300x300"/></li>
+                <li class="white"><img src="http://placehold.it/300x300"/></li>
+                <li class="black"><img src="http://placehold.it/300x300"/></li>
+                <li class="white"><img src="http://placehold.it/300x300"/></li>
+                <li class="black"><img src="http://placehold.it/300x300"/></li>
+                <li class="white"><img src="http://placehold.it/300x300"/></li>
+                <li class="black"><img src="http://placehold.it/300x300"/></li>
+
+            </ul>
+        </div>
+
+
+
+        <div class="a">A</div>
+        <div class="b">B</div>
+        <div class="grandmom">
+            <div class="mother">
+                <div class="son"></div>
+            </div>
+        </div>
+        <div class="col4">
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="fix_col4">
+            <ul>
+                <li><img src="http://placehold.it/100x100" alt=""></li>
+                <li><img src="http://placehold.it/100x100" alt=""></li>
+                <li><img src="http://placehold.it/100x100" alt=""></li>
+                <li><img src="http://placehold.it/100x100" alt=""></li>
+            </ul>
+        </div>
+    </section>
+    <section class="num2"><p>이제 도착!</p></section>
+    <section class="num3"><div></div></section>
+    <section class="num4"></section>
+</body>
+
+<script>
+// <!-- 마우스오버는 자식감지 못함 -> 반복문으로 확인과정을 거쳐야함 -->
+// <!-- 마우스엔터와 마우스리브는 감지를 일일히 걸어야하지만 자식까지 다 포함하기 때문에 이게 나음. -->
+
+// 광고를 지날때 헤더메뉴 스티키하기 (scroll)
+// num3에 왔을 때 등장하는 네모 (scroll)
+// num4에 왔을 때 변하는 배경색과 등장하는 글자들(scroll)
+// 창이 420이하로 줄을 때 스마트폰 메뉴 - 클릭 (resize , load)
+// 창이 421~768 일때 패드 메뉴 - 클릭 (resize , load)
+// 창이 769~ 일때 데스크톱 메뉴 - 호버 (resize , load)
+// 창이 420이하로 줄을 때 스마트폰 메뉴 css 변화, 배치 변화 (@media)
+// 창이 421~768 일때 패드 메뉴 css 변화, 배치 변화 (@media)
+// 창이 769~ 일때 데스크톱 메뉴 css 변화, 배치 변화 (@media)
+
+    window.addEventListener('scroll', scrollWork);
+    window.addEventListener('resize', resizeWork);
+    window.addEventListener('load', resizeWork);
+
+    const htmlElem = document.querySelector('html');
+    const headerElem = document.querySelector('header');
+    const yellowPelem = document.querySelector('.num2 > p');
+    const pinkElem = document.querySelector('.num3');
+    const aInfo = document.querySelector('.a');
+    const bInfo = document.querySelector('.b');
+    const menuBtns = document.querySelectorAll('#photo_list > li');
+    console.log(menuBtns);
+
+
+
+
+
+    function mobileMenu(ev) {
+        ev.preventDefault();
+        const targetUl = this.querySelector('ul');
+        //this는 키워드. 편리장치라 생각하면 된다. 가르키는 대상이 존재하는데 실행주체의 왼쪽을 가르킨다.
+        // 즉 menuBtns[i].addEventListener('click', mobileMenu); 여기서 실행주체는 에드리스너 , .(점)왼쪽은 li이다. 
+        // this는 li 
+        // e.target은 정확하게 알기 어렵지만(콘솔로 확인해야함) this는 명확하다.
+        if (targetUl === null) return; //서브메뉴가 없으면 없던걸로 하자.(조용히 빠져나간다.)
+        if (targetUl.className === 'on') {
+            targetUl.className = '';
+        } else  {
+            targetUl.className = 'on';
+        }
+    }
+    function deskMenuEnter() {
+        if(this.querySelector('ul') === null) return;
+        this.querySelector('ul').className = 'on';
+    }
+    function deskMenuLeave() {
+        //if(this.querySelector('ul') === null) return; 비교를 해도 되지만 귀찮응께.... null은 false니께... !붙여주면 되지..
+        if(!this.querySelector('ul')) return;
+        this.querySelector('ul').className = ''; 
+    }
+    function resizeWork() {
+        console.log(`높이는 ${window.innerHeight}px이고 넓이는 ${window.innerWidth}px입니다.`)
+
+        if (window.innerWidth < 1000) {
+            for(let i = 0; i<menuBtns.length; i++){
+                menuBtns[i].addEventListener('click', mobileMenu);
+                menuBtns[i].removeEventListener('mouseenter', deskMenuEnter);
+                menuBtns[i].removeEventListener('mouseleave', deskMenuLeave);
+            } //감지장치 달아주기.
+        } else  {
+            for(let i = 0; i<menuBtns.length; i++){
+                menuBtns[i].removeEventListener('click', mobileMenu);
+                menuBtns[i].addEventListener('mouseenter', deskMenuEnter);
+                menuBtns[i].addEventListener('mouseleave', deskMenuLeave);
+            } //감지장치 달아주기.
+        }
+    }
+
+
+
+    var old = 0;
+    
+
+    function scrollWork() {
+        console.log(htmlElem.scrollTop);
+        if (htmlElem.scrollTop <= 80) {
+            headerElem.classList.remove('on');
+        } else if (htmlElem.scrollTop > 80 && htmlElem.scrollTop < 90) {
+            headerElem.classList.add('on');
+        } else if (htmlElem.scrollTop > 500 && htmlElem.scrollTop < 600) {
+            console.log('500이상!')
+            yellowPelem.classList.add('on');
+        } else if (htmlElem.scrollTop > 1200 && htmlElem.scrollTop < 1300) {
+            pinkElem.classList.add('on');
+        }
+
+        if (!headerElem.classList.contains('on')) return; //on이 없다면 빠져나가라.
+
+        if (old < htmlElem.scrollTop && htmlElem.scrollTop > 200 ){ //스크롤을 내렸으면
+            headerElem.classList.add('hide'); //classList를 사용하여 hide를 준다
+        }else{
+            headerElem.classList.remove('hide');//스크롤을 올렸으면
+        }
+        old = htmlElem.scrollTop;
+        
+    }
+</script>
+
+</html>

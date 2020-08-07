@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0720수업</title>
+</head>
+<body>
+    <h1>0720 JS수업</h1>
+    <script>
+        // var a = {b:10};
+        // var c = new Object(); //객체 익스프레션 = 리터럴
+
+        // var d = [];  
+        // var e = new Array(); //배열 정보뭉치
+
+        // var g = new Function(); 
+        // var h = function(){};
+        // var i = () => {}; //함수 정보뭉치
+        //  // 'js에서는 함수 객체 배열은 모두 객체입니다. 즉 정보뭉치를 생성하는 구조를 가지고 있따라는 뜻~'
+    
+        var j = 1;
+        var param1 = 2;
+        console.log(this);
+        foo(10);
+        
+        // var foo = fucntion() {}; foo(); // FE: 표현형, 미리 준비되지 않음.
+       
+        function foo(param1){ // FD: 선언형, 미리 준비됨.
+            var k = 1;
+            console.log(this); 
+            bar(5)
+            function bar(param2){
+                console.log(this);
+                console.log(j+param1+param2);
+            }
+        }
+        // function foo(){ //미리 준비됨. 단점은 겹쳐질 수 있다라는 것. 큰 규모로 함수를 짤 땐 이러면 안됨.
+        //     console.log('h')
+        // }
+        
+      
+    </script>
+</body>
+</html>

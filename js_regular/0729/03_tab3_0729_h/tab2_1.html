@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>hello world!</title>
+<style>
+* {margin:0; padding:0}
+li {list-style: none}
+.notice {width:400px;}
+.notice > .tab > li > a {
+	float:left;
+	background-color: #ededed;
+	width:50%;
+	padding:10px;
+	text-align: center;
+	text-decoration: none;
+	color:black;
+	box-sizing: border-box;
+	font-weight: bold;
+	letter-spacing: 10px;
+}
+.notice > .tab > li + li > a {
+	border-left:1px solid white;
+}
+.notice > .tab > li.on > a {
+	background-color: lime;
+	border-bottom:1px solid lime;
+}
+.notice > .content {
+	width:100%;
+	height: 100px;
+	padding: 30px;
+	background-color: #ededed;
+	box-sizing: border-box;
+	display: none;
+	clear:both;
+	position: relative;
+}
+.notice > .content.on {
+	background-color:lime;
+	display:block;
+}
+.notice > .content > .close {
+	position:absolute;
+	right:10px;
+	bottom:10px;
+	font-size: 12px;
+}
+
+</style>
+
+</head>
+<body>
+<div class="notice">
+	<ul class="tab">
+		<li><a href="">예술</a></li>
+		<li class="on"><a href="">과학</a></li><!-- on을 붙여서 탭활성화 -->
+	</ul>
+	<div class="content">
+		<p>예술은 아름답다. 예술은 아름답다. 예술은 아름답다. 예술은 아름답다. 예술은 아름답다.</p>
+		<a href="" class="close">닫기</a>
+	</div>
+	<div class="content on"> <!-- on을 붙여서 탭활성화 -->
+		<p>과학은 아름답다. 과학은 아름답다. 과학은 아름답다. 과학은 아름답다. 과학은 아름답다.</p>
+		<a href="" class="close">닫기</a>
+	</div>
+</div>
+<script>
+// 탭순서와 컨텐츠 순서를 이용해서 만드세요.
+// onclick 이벤트를 사용하세요.
+
+var tabElem = document.querySelector(".notice");
+var tabLis = tabElem.querySelectorAll(".tab > li");
+var tabContents = tabElem.querySelectorAll(".content");
+var closeBtns = tabElem.querySelectorAll(".close");
+
+
+// addEventListener 2)에서 for문 함수로 바꾸기.
+tabElem.addEventListener('click', clickWork);
+
+for (let i = 0 ; i < tabLis.length ; i++){
+ 	tabLis[i].indexNum = i; //유사배열에 indexNum속성추가
+}
+function clickWork(ev){
+	ev.preventDefault();
+	if(ev.target.tagName === 'A' && ev.target.parentNode.tagName === 'LI'){
+		let num = ev.target.parentNode.indexNum;	
+		if(ev.target.parentNode.classList.contains('on')){
+			//ev.target.parentNode.classList.remove('on')
+			tabLis[num].classList.remove('on');
+			tabContents[num].classList.remove('on');
+		} else {
+			// 돌면서 전체 지우깅
+			removeAllItems();
+			tabLis[num].classList.add('on');
+			tabContents[num].classList.add('on');
+		}
+	} else {
+		// 돌면서 전체 지우깅
+		removeAllItems();
+	}
+}
+function removeAllItems(){
+	for(let i = 0; i < tabLis.length; i++){
+		tabLis[i].classList.remove('on');
+		tabContents[i].classList.remove('on');
+	}
+}
+
+
+
+
+
+// addEventListener 2)
+// tabElem.addEventListener('click', clickWork);
+
+// for (let i = 0 ; i < tabLis.length ; i++){
+//  	tabLis[i].indexNum = i; //유사배열에 indexNum속성추가
+// }
+// console.log(tabLis)
+// function clickWork(ev){
+// 	ev.preventDefault();
+// 	if(ev.target.tagName === 'A' && ev.target.parentNode.tagName === 'LI'){
+// 		let num = ev.target.parentNode.indexNum;	
+// 		if(ev.target.parentNode.classList.contains('on')){
+// 			//ev.target.parentNode.classList.remove('on')
+// 			tabLis[num].classList.remove('on');
+// 			tabContents[num].classList.remove('on');
+// 		} else {
+// 			// 돌면서 전체 지우깅
+// 			for(let i = 0; i < tabLis.length; i++){
+// 				tabLis[i].classList.remove('on');
+// 				tabContents[i].classList.remove('on');
+// 			}
+// 			tabLis[num].classList.add('on');
+// 			tabContents[num].classList.add('on');
+// 		}
+// 	} else {
+// 		// 돌면서 전체 지우깅
+// 		for(let i = 0; i < tabLis.length; i++){
+// 			tabLis[i].classList.remove('on');
+// 			tabContents[i].classList.remove('on');
+// 		}
+// 	}
+// }
+
+
+
+
+
+
+
+// addEventListener 1)
+// tabElem.addEventListener('click', clickWork);
+//
+// function clickWork(ev){
+//	ev.preventDefault();
+//	
+//	if(ev.target.tagName === 'A'){
+//		const realLis = Array.from(tabLis) 
+//		const crrIndex = realLis.indexOf(ev.target.parentNode); 
+//
+//		if(ev.target.parentNode.classList.contains('on')){
+//			ev.target.parentNode.classList.remove('on');
+//			tabContents[crrIndex].classList.remove('on');
+//		}else{
+//			for(let i = 0; i < tabLis.length; i++){
+//				tabLis[i].classList.remove('on');
+//				tabContents[i].classList.remove('on');
+//			}
+//			ev.target.parentNode.classList.add('on');
+//			tabContents[crrIndex].classList.add('on');
+//		}
+//	}
+//}
+
+
+
+
+
+
+
+// onclick
+// tabElem.onclick = function(e){
+// 	e.preventDefault();
+// 	if(e.target.tagName !== 'A') return;
+// 	for(let i = 0; i < tabLis.length; i++){
+// 		tabLis[i].classList.remove('on');
+// 		tabContents[i].classList.remove('on');
+// 	}
+
+// 	const realLis = Array.from(tabLis) // 진짜 배열로 바꾼다.
+// 	const crrIndex = realLis.indexOf(e.target.parentNode); //클릭한 애의 li번호 획득.
+// 	e.target.parentNode.classList.add('on');
+// 	tabContents[crrIndex].classList.add('on');
+// 	// tabElem.querySelectorAll(".content")[`${crrIndex}`].classList.add('on');
+// 	// c[`${crrIndex}`].classList.add('on');
+	
+// 	closeBtns[crrIndex].addEventListener('click', close);
+
+// 	function close(e){
+// 		e.preventDefault();
+// 		if(e.target.tagName !== 'A') return;
+// 		const realDiv = Array.from(tabContents) // 진짜 배열로 바꾼다.
+// 		const crrIndex2 = realDiv.indexOf(e.target.parentNode); //
+	
+// 		tabLis[crrIndex2].classList.remove('on');
+// 		tabContents[crrIndex2].classList.add('close');	
+// 	}
+// }
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>hello world!</title>
+<style>
+* {margin:0; padding:0}
+.comment {
+	padding:30px 0;
+	width:500px;
+	margin:0 auto;
+}
+.comment h4{
+	text-align: center;
+	margin-bottom:20px;
+}
+.comment textarea {
+	border:3px solid black;
+	width:100%;
+	display:block;
+	height:100px;
+	padding:20px;
+	font-size:16px;
+	box-sizing: border-box;
+}
+.comment .counter {text-align:right;}
+.comment .counter > span.toomuch {color:red}
+</style>
+
+</head>
+<body>
+<div class="comment">
+    <h4>댓글을 남겨주세요.</h4>
+    <!-- <p>50자내로 작성해주세요</p> -->
+	<textarea maxlength="60"></textarea>
+	<div class="counter"><span>0</span><strong> / 50</strong></div> 
+</div>
+<script>
+
+// maxlength를 이용해서 <p>와 <div class="counter">의 노드들을 만들어서 사용하세요
+// 만약 <textarea>마저 준비되지 않았다면 중단하도록 만드세요.
+
+var commentElem = document.querySelector(".comment");
+var inputText = document.querySelector("textarea");
+var counterSpan = document.querySelector(".counter > span");
+var counterStrong = document.querySelector(".counter > strong");
+var maxNum = inputText.maxLength; //핵심
+var text = maxNum + '자내로 작성';
+var pElem = document.createElement('p');
+pElem.textContent = text;
+commentElem.insertBefore(pElem, inputText)
+counterStrong.textContent = ` / ${maxNum} `;
+
+
+inputText.addEventListener('keyup', countText);
+
+function countText(){
+	let nowNum = inputText.value.length; //value는 돔, length는 자바스크립트 도구.
+	counterSpan.textContent = nowNum;
+	
+	if(nowNum === maxNum){
+		counterSpan.className = 'toomuch';
+	}
+}
+
+
+
+
+// var allElem = document.querySelector("commment");
+// var inputText = document.querySelector("textarea");
+// var counterSpan = document.querySelector(".counter > span");
+// var maxNum = inputText.getAttribute("maxlength") ;
+
+// inputText.addEventListener('keyup', countText);
+
+// function countText(){
+// 	let nowNum = inputText.value.length; //value는 돔, length는 자바스크립트 도구.
+// 	counterSpan.textContent = "";
+// 	counterSpan.textContent = nowNum;
+	
+// 	var pElem = document.createElement('p');
+// 	var pTxt = document.createTextNode(`${nowNum}자 내로 작성해주세요.`);
+// 	var divElem = document.createElement('div');
+// 	var divTxt = document.createTextNode('어쩌구');
+
+// 	pElem.appendChild(pTxt);
+// 	allElem.appendChild(pElem);
+// 	divElem.appendChild(divTxt);
+// 	allElem.appendChild(divElem);
+
+
+// 	if(nowNum === maxNum){
+// 		counterSpan.className = 'toomuch';
+// 	}
+// }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Vue.js을 연습해보자(1). 0729</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="age"/>
+        <p>저는 {{ age > 40  ? 'old' : 'young'}} 합니다.</p>
+        <p>저는 {{ (age*1) + 1 }}살 입니다.</p>
+        <p>{{ aboutMe }}</p>
+        <button v-on:click="sumAge">나이 증가</button> <!--v-on:click="실행할함수" 는 addEventListenter와 같다.-->
+
+    
+        <h1>{{ name }}의 소개</h1>
+        <!-- 
+            {{}} 통로 안에서는 '식'expression 만 사용할 수 있다. ex) age+1, 삼항연산자, 객체접근
+            문은 사용할 수 없음. ex) if문, a=3 할당식, 
+            get, set과 같은 느낌임.  
+        -->
+        <input type="text" v-model="name" /><!-- v-model -->
+
+    </div>
+
+    <script>
+        //0807
+        const person = {
+            firstName = 'eulsoo',
+            lastName = 'jung',
+            fullName(){
+                return `${this.firstName} ${this.lastName}`;
+            },
+            writeFullName(name){
+                
+            }
+        }
+        console.log(person.fullName());
+
+        //2)
+        // const heemyun = new Vue({
+        //     el: '#app',
+        //     data: {
+        //         name : 'heemyun',
+        //         age: 28
+        //     },
+        //     computed: {
+        //         aboutMe(){
+        //             return `제 이름은 ${this.name}임다. 나이는 ${this.age}임다.`;
+        //             // 반드시 return이 있어야한다.
+        //             // 여기서 this는 인스턴스를 가리킨다.
+        //         }
+        //     },
+        //     methods: {
+        //         sumAge(){
+        //             this.age++;
+        //         }
+        //     },
+        //     created() {
+        //         //인스턴스가 다 생성된 후 내가 하고싶은 일을 넣어주면 된다.
+        //         console.log('인스턴스 생성 완료!');
+        //     },
+        //     mounted() {
+        //         //DOM이 연결된 후에 얘를 실행시켜준다.
+        //         console.log('DOM과 연결 완료!')
+        //     }
+        // })
+
+
+        //1)
+        // //vue로 찍어낸 프로그램을 돔과 연결하여 사용하게된다. data와 html(dom)과 연결한다.
+        //     const firstVue = new Vue({
+        //         el:'#app', 
+        //         data:{
+        //             name: 'heemony'
+        //         } 
+        //     }); 
+        //     // new Vue(); - instance 생성. vue의 새생명이 태어났다.
+        //     // new Vue({el:'#app'}); - el에 #app을 줘보자.
+        //     // data:{} - data는 반드시 객체로 넣는다.
+                
+
+        // const firstVue = new Vue({
+        //     el:'#app', //반응할 dom을 만들기 위한 마크업 상의 영역 지정
+        //     data:{ //DOM을 다루기 위해 필요한 데이터를 보관
+        //         name: 'heemony'
+        //     },
+        //     computed: , //데이터를 사용하려 할 때 하고 싶은 일을 등록
+        //     methods: , //필요한 함수들을 등록
+        //     created: , //인스턴스 생성 시점에 필요한 함수들을 등록
+        // }); 
+
+    </script>
+</body>
+</html>

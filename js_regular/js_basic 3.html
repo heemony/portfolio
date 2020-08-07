@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>이벤트</title>
+	<style>
+		* {margin:0; padding: 0;}
+		li {list-style: none}
+		ul#photo_list {
+			border:2px solid lime; 
+			display: inline-block; 
+			padding: 20px;
+		}
+		ul#photo_list > li {
+			border:1px solid orange;  
+			float:left; 
+			padding: 20px; 
+			position: relative;
+		}
+		ul#photo_list > li > a {
+			border:1px solid black;
+			padding: 10px;
+		}
+		ul#photo_list ul {
+			display: none;
+			background-color: yellow; 
+			position: absolute; 
+			top:40px; 
+			left:0; 
+			width: 100px;
+			padding: 10px;
+			z-index: 100;
+			border:1px solid lime;
+		}
+		ul#photo_list ul.opened {
+			display: block
+		}
+		ul#photo_list ul > li {
+			border:1px solid orange;
+			padding: 5px;
+		}
+		ul#photo_list ul > li > a {
+			text-decoration: none;
+			border:1px solid black;
+		}
+		body {padding:30px;}
+		#service ul.on > li{
+			border: 1px solid blue;
+		}
+		#service ul.act1 > li{
+			border: 1px solid red;
+		}
+		#service ul.act2 > li{
+			background-color: aquamarine;
+		}
+	</style>
+</head>
+<body>
+	
+	<div id="service">
+		<h2><a href="#" >차량 서비스</a></h2>
+		<ul title="인기서비스"  class="">
+			<li>세차</li>
+			<li>주유</li>
+			<li>소모품교체</li>
+		</ul>
+	</div>
+	<ul id="photo_list">
+		<li>
+			<a href="#">건물</a>
+			<ul>
+				<li><a href="#">남산타워</a></li>
+				<li><a href="#">63빌딩</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#">커피</a>
+			<ul>
+				<li><a href="#">아메리카노</a></li>
+				<li><a href="#">카페라테</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#">불꽃놀이</a>
+			<ul>
+				<li><a href="#">한강축제</a></li>
+				<li><a href="#">금강축제</a></li>
+			</ul>
+		</li>
+		<li>
+			<a href="#">장미</a>
+			<!-- <ul>
+				<li><a href="">백장미</a></li>
+				<li><a href="">흑장미</a></li>
+			</ul> -->
+		</li>
+	</ul>
+</body>
+
+<script>
+/////////////////(5) 버튼을 클릭하면 li에 보더그리기./////////////////
+// 리스너는 #service 하나에게만 준다.
+// 캡쳐링되면 li에 빨간줄
+// 버블링되면 li에 초록배경
+	const serviceElem = document.querySelector('#service');
+	const ulElem = document.querySelector('#service ul');
+	const liElems = document.querySelectorAll('#service li');
+	serviceElem.addEventListener('click', clickWork);
+
+	//function clickWork(e){
+		//e.stopPropagation();
+	//	console.log(e.target); console.log(e.target.tagName);
+	//	if(e.target.tagName === 'A'){
+	//		ulElem.className = 'on';
+	//	}else{
+	//		for(let i=0; i < liElems.length; i++){
+	//			liElems[i].style.background = 'lime';
+	//		}
+	//	}
+	//}
+
+	//방법을 통일시켜보자.
+	function clickWork(e){
+		if(e.target.tagName === 'A'){
+			ulElem.className = 'act1';
+		}else{
+			ulElem.className = 'act2';
+		}
+	}
+
+/////////////////(4) 버튼을 클릭하면 li에 보더그리기./////////////////
+	// const aElem = document.querySelector('#service > h2 > a');
+	// const ulElem = document.querySelector('#service ul');
+	// const liElems = document.querySelectorAll('#service li');
+	// aElem.addEventListener('click', clickWork);
+	// ulElem.addEventListener('click', ul할일);
+	// function ul할일(){
+	// 	for(let i = 0; i<liElems.length; i++){
+	// 		liElems[i].style.backgroundColor = 'lime';
+	// 	}
+	// }
+	// function clickWork(){
+	// 	ulElem.className = 'on';
+	// }
+
+
+/////////////////(3) 버튼을 클릭하면 li에 보더그리기./////////////////
+	// const aElem = document.querySelector('#service > h2 > a');
+	// const ulElem = document.querySelector('#service > ul');
+	// const serLists = document.querySelectorAll('#service > ul > li');
+	// //aElem.addEventListener("click", roundBorder);
+	// aElem.onclick = roundBorder;
+
+	// function roundBorder(){
+	// 	// for(let i = 0; i<serLists.length; i++){
+	// 	// 	serLists[i].style.border = '1px solid red';		
+	// 	ulElem.className = 'on';
+	// }
+
+
+	
+/////////////////(2)li에 일일이 이벤트를 걸고 싶을 때./////////////////
+	//1- a를 다 찾아서 배열로 받아온다.
+	// var aElems = document.querySelectorAll('#photo_list > li > a');
+	//2- for문을 돌려서 받아준다.
+	// for(let i = 0; i < aElems.length; i++){
+	// 	aElems[i].addEventListener("click", aWork);
+	// }
+	// function aWork(){
+	// 	console.log('aElems에 이벤트리스터 붙이기.');
+	// }
+
+	//을수쌤
+	// aElems[0].addEventListener("click", a할일);
+	// aElems[1].addEventListener("click", a할일);
+	// aElems[2].addEventListener("click", a할일);
+	// aElems[3].addEventListener("click", a할일);
+	// => 요거를 for문으로했따~
+	// for(let i = 0; i < aElems.length; i++){
+	// 	aElems[i].addEventListener("click", a할일);
+	// }
+
+
+
+/////////////////(1)이벤트 버블링과 캡쳐링실험. 그리고 stopPropagation으로 방지/////////////////
+	// var body요소 = document.querySelector("body");
+	// var ul요소 = document.querySelector("ul");
+
+	// window.addEventListener("click", window할일, false );
+	// body요소.addEventListener("click", body할일, false );
+	// //ul요소.addEventListener("click", ul할일, false );
+	// ul요소.onclick = ul할일; //클릭만 감지하여 클릭하는 순간 ul할일을 진행한다. "할당방식"
+	
+	// // ul요소.onclick = function(e){
+	// //
+	// // }; 이런 형식은 캡쳐링은 안됨.
+	
+
+	// function ul할일(e){
+	// 	//e.stopPropagation(); //캡쳐링, 버블링 방지.
+	// 	e.preventDefault();
+	// 	console.log('ul에 도착했어!');
+	// }
+	// function body할일(e){
+	// 	e.preventDefault();
+	// 	console.log('body에 도착했어!');
+	// }
+	// function window할일(e){
+	// 	e.preventDefault();
+	// 	console.log('window에 도착했어!');
+	// }
+
+
+</script>
+</html>
+
+
+
+
+
+
+

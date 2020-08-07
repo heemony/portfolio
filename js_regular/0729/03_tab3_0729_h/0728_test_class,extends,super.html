@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="main">
+        <br>
+        a
+        <br>
+        b
+        <br>
+        c
+        <br>
+        <br>
+        <br>
+        <br>
+        dmdkdmkd
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        dmdkdkdkdk
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    </div>
+    <script>
+        var obj = {};
+        var 운송기 = new Function();
+        // var obj = {};와 var obj = new Object();는 완전히 같다.
+
+
+        /*old*/
+        function 운송기(a, b, c, d){
+            this.창문 = a;
+            this.바퀴 = b;
+            this.엔진 = c;
+            this.엑셀 = d;
+        } //this는 new키워드를 통해 호출을 할 때 생성된다. -> 30,31l
+        운송기.prototype.전진하기 = function(){
+            console.log(this + '전진한다~~!~!!~!~!!!');
+        }
+        운송기.prototype.후진하기 = function(){
+            console.log(this + '후진하는 중~~~');
+        }
+        운송기.prototype.주차하기 = function(){
+            console.log(this + '주차하는 중~~~');
+        }
+
+        
+
+
+        /*new*/
+        class 운송기2 {
+            // [파라미터를 사용한다.]
+            constructor(a, b, c, d) {
+                this.창문 = a;
+                this.바퀴 = b;
+                this.엔진 = c;
+                this.엑셀 = d;
+            } // 인자값을 받아서 설정이 가능한 속성들은 constructor에 저장을 한다. (변화되는 값)
+            
+            전진하기(){
+                console.log('부릉부릉')
+            } // class안에 쓸 때에는 functionr을 쓰지 않아도 된다.  운송기.prototype.전진하기 = function(){로직};과 같은 역할을 한다.
+
+            // [파라미터를 사용하지 않는 함수]
+            소재 = '금속'; // 인자를 받고싶지 않은 속성들은 이렇게 선언하는 식으로. (변경되지 않고, 변화하지 않는 값)
+            #sn = '798#2a3-2'; //밖에서 접근이 되지 않고, private한 변수라 수정이 불가능하다. (# 내부적으로만 사용) //undefined출력
+            static type = 'transport'; // static은 부모에게만 있다. 자식에게 전달 ㄴㄴ
+            static #company = 'VVD'; // 접근이 안됨. 내부적으로만 가능. 부모만.
+           
+            // [데이터에 반응하는 함수]
+            get basicInfo(){
+                let data = `소재는 ${this.소재}이고, S/N은 ${this.#sn}입니다`;
+                return data; //get을 쓸 땐 반드시 return이 있어야한다.
+            }
+            set 탑승객수(a){
+                if(a>5){
+                    this.바퀴 = this.바퀴 + 2;
+                }
+            }// set은 반드시 파라미터가 있어야한다.
+        }
+
+
+
+
+
+        /*class*/
+        // 글 순서대로 상하관계라고 생각하면 좋다. 
+        class 철수{
+            constructor() {
+                this.키 = 180;
+            }
+            getIQ(){
+                return 140;
+            }
+            운동하기(){
+                console.log('운동 잘 한다!')
+            }
+        }
+        class 영희 extends 철수{ //철수에서 확장된 영희.
+            constructor() {
+                super(); 
+                this.머리색 = '갈색';
+            }
+            getIQ(){
+                return 150;
+            }
+            그림그리기(){
+                console.log('그림 잘 그린다!');
+            }
+            운동하기(){
+                console.log('운동 잘 한다!')
+            } //철수와 영희에 같은 함수가 있다면 영희것으로 오버라이딩됨. 
+            소개하기(){
+                console.log(`제 아이큐는 ${super.getIQ()}이고 키는 ${this.키}이고, 머리색은 ${this.머리색}입니다.`)
+            }// ${super.getIQ()} 철수꺼  ${this..getIQ()}영희꺼
+        } //extends를 쓸 땐 super
+        const 아들 = new 영희();
+        console.log(아들)
+        아들.운동하기()
+        아들.그림그리기()
+        아들.소개하기()
+        console.log(아들.__proto__);
+
+
+
+        /*출력*/
+        //var 변하는 놈. 함수 레벨 스코프
+        //var 자동차 = new 운송기(4, 4, 1, 1); //자동차라는 새로운 객체가 this가 된다.
+        //var 비행기 = new 운송기(30, 2, 3, 1); //비행기라는 새로운 객체가 this가 된다.
+
+        //const 변하지 않는 놈. 블록 레벨 스코프
+        //const 자동차2 = new 운송기2(8,4,1,1); 
+        //자동차2.탑승객수 = 10;
+        //console.log(자동차2);
+
+
+        //자동차.전진하기()
+        //비행기.후진하기()
+        //자동차.constructor = 'a'; //자동차에 constructor라는 항목에 a를 넣은건데, 이딴짓은 하면 안된다... 
+        //console.log(자동차.constructor === Object) //false
+        // console.log(자동차.__proto__.__proto__);
+        //console.log(운송기.prototype)
+        //console.log(운송기2.type) //transport
+       
+        
+        // let eulsoo = new Array(); 아래와 같아.
+        //let eulsoo = [];
+        //console.log(eulsoo)
+        // eulsoo.isArray(); // 쓸 수 없음.
+        //console.log(Array.isArray(eulsoo)); 
+        
+        
+        //const html = document.querySelector('html')
+
+        //window.addEventListener('scroll', work)
+        //window.addEventListener('click', function(){
+        //   html.scrollTop = 200;
+        //})
+        
+        //function work(){
+        //    console.log(html.scrollTop);
+        //}
+
+
+        /*
+        [[ptorotype]],  __proto__ 는 같은 것으로 '통로'를 말한다. (prototype과는 다름)
+
+        */
+    </script>
+</body>
+</html>

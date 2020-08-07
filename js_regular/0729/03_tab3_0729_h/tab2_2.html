@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>hello world!</title>
+<style>
+* {margin:0; padding:0}
+li {list-style: none}
+.notice {width:400px;}
+.notice > .tab > li > a {
+	float:left;
+	background-color: #ededed;
+	width:50%;
+	padding:10px;
+	text-align: center;
+	text-decoration: none;
+	color:black;
+	box-sizing: border-box;
+	font-weight: bold;
+	letter-spacing: 10px;
+}
+.notice > .tab > li + li > a {
+	border-left:1px solid white;
+}
+.notice > .tab.on0 > li.art > a {
+	background-color: lime;
+	border-bottom:1px solid lime;
+}
+.notice > .tab.on1 > li.science > a {
+	background-color: lime;
+	border-bottom:1px solid lime;
+}
+.notice > .contents > div{
+	width:100%;
+	height: 100px;
+	padding: 30px;
+	background-color: #ededed;
+	box-sizing: border-box;
+	display: none;
+	clear:both;
+	position: relative;
+}
+.notice > .contents.on0 > .art{
+	background-color:lime;
+	display:block;
+}
+.notice > .contents.on1 > .science{
+	background-color:lime;
+	display:block;
+}
+.notice > .contents > div > .close {
+	position:absolute;
+	right:10px;
+	bottom:10px;
+	font-size: 12px;
+}
+
+</style>
+
+</head>
+<body>
+<div class="notice">
+	<ul class="tab on1"> <!-- on0은 art가 열리고, on1는 science가 열림 -->
+		<li class="art"><a href="">예술</a></li>
+		<li class="science"><a href="">과학</a></li>
+    </ul>
+    <div class="contents on1"> <!-- on0은 art가 열리고, on1는 science가 열림 -->
+        <div class="art">
+            <p>예술은 아름답다. 예술은 아름답다. 예술은 아름답다. 예술은 아름답다. 예술은 아름답다.</p>
+            <a href="" class="close">닫기</a>
+        </div>
+        <div class="science">
+            <p>과학은 아름답다. 과학은 아름답다. 과학은 아름답다. 과학은 아름답다. 과학은 아름답다.</p>
+            <a href="" class="close">닫기</a>
+        </div>
+    </div>
+	
+</div>
+<script>
+
+// tabElem에 addEventListener를 사용하세요.
+// tab의 갯수가 늘어나는 것을 고려하지 마세요.
+// 도움말 : 순서값을 각 li객체에 기록해 두고 작업하면 더 낫습니다.
+
+var tabElem = document.querySelector(".notice");
+var tab = tabElem.querySelector(".tab");
+var tabLis = tab.querySelectorAll(".tab > li");
+var tabContent = tabElem.querySelector(".contents");
+
+// 2)
+tabElem.addEventListener('click', clickWork);
+
+for (let i = 0 ; i < tabLis.length ; i++){
+  	tabLis[i].indexNum = i; //유사배열에 indexNum속성추가
+}
+
+function clickWork(ev){
+	ev.preventDefault();
+	if(ev.target.tagName === 'A' &&
+		ev.target.parentNode.tagName === 'LI'){
+		let crrName = 'on' + ev.target.parentNode.indexNum; //indexNum에 문자열 on을 붙여서 on0, on1
+		if(	tab.classList.contains(crrName)){
+			tab.className = 'tab';
+			tabContent.className = 'contents';
+		}else{
+			tab.className = 'tab ' + crrName;
+			tabContent.className = 'contents ' + crrName;
+		}
+	}else{
+		if(ev.target.className === 'close'){
+			tabContent.className = 'tab close';
+		}
+	}
+}
+ 
+
+
+
+
+
+
+
+// tab의 순서를 기록해 둔다. 
+//for (let i = 0 ; i < tabLis.length ; i++){
+//  	tabLis[i].indexNum = i; //유사배열에 indexNum속성추가
+// }
+// tabElem.addEventListener('click', showWork);
+// function showWork(e){
+// 	e.preventDefault();
+// 	console.log(e.target)
+// 	if(e.target.tagName === 'A'){
+// 		let num = ev.target.parentNode.indexNum;	
+
+// 		if(e.target.classList.parentNode.contains('on1')){
+// 			tabLis[num].classList.remove('on1');
+// 			tabContents[num].classList.remove('on1');
+// 			tabLis[num].classList.add('on2');
+// 			tabContents[num].classList.add('on2');
+// 		} else {
+// 			tabLis[num].classList.remove('on2');
+// 			tabContents[num].classList.remove('on2');
+// 			tabLis[num].classList.add('on1');
+// 			tabContents[num].classList.add('on1');
+// 		}
+// 	}
+// 	
+// 	}
+// }
+
+</script>
+</body>
+</html>

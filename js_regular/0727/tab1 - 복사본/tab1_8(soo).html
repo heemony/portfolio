@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>hello world!</title>
+<style>
+* {margin:0; padding:0}
+li {list-style: none}
+body {padding:50px;}
+
+.wrap {
+	width:90.196078%; /* 920 / 1020 */
+	margin:0 auto; 
+	background-color:lime; 
+	height: 500px;
+}
+.tab_menu {
+	border:2px solid black; 
+	width:54.130435%; /* 498 / 920 */
+	margin:0 auto;
+	overflow: hidden;
+	min-width: 400px;
+}
+.tab_menu > li > a {
+	position: relative;
+	float:left; 
+	width: calc( (100% - 8px) / 5) ; /* 98 / 498 */
+	background-color: #999; 
+	line-height: 50px; 
+	text-align: center;
+	color:white;
+	text-decoration-line: none;
+}
+.tab_menu > li.on > a {
+	background-color:blue;
+}
+.tab_menu > li + li > a {
+	margin-left:2px;
+}
+.tab_content > div {
+	display: none;
+	margin:20px;
+	padding:20px;
+	background-color:blue;
+	color:white;
+	font-size:18px;
+}
+.tab_content > div.on {
+	display: block;
+	height: 300px;
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+	<ul class="tab_menu">
+		
+	</ul>
+	<div class="tab_content">
+		
+	</div>
+</div>
+<script>
+// * onclick 이벤트리스트너를 이용하세요.
+// * 유지보수시 json파일만 업데이트를 하면 탭갯수와 내용 색들이 자동으로 추가되어야 함.HTML이나 CSS를 수정할 필요가 없어야함.
+// * http://www.json-generator.com/api/json/get/ceFOzWDyEO?indent=4를 사용하세요.
+// 8. tab_5_data.json 을 이용해서 색상 + 내용 + DOM 랜더링 작업하기
+
+
+// 데이터 준비
+const dataUrl = 'https://next.json-generator.com/api/json/get/4JhufOJeF';
+const reqObj = new XMLHttpRequest();
+	reqObj.open('GET', dataUrl);
+	reqObj.responseType = 'json';
+	reqObj.send();
+	reqObj.onload = function(){
+		const eulsooData = reqObj.response;
+		tabmenu(eulsooData);
+	}
+
+
+function tabmenu(myData) {
+
+	// 노드 준비
+	var tabMenu = document.querySelector(".tab_menu");
+	var tabContent = document.querySelector(".tab_content");
+
+	for (let i = 0; i < myData.tabItems.length; i++) {
+		var $li = document.createElement('li');
+		var $a = document.createElement('a');
+		$a.href = '#';
+		$a.textContent = myData.tabItems[i].itemName;
+		$li.appendChild($a);
+		tabMenu.appendChild($li);
+
+		var $div = document.createElement('div');
+		$div.textContent = myData.tabItems[i].itemContent
+		tabContent.appendChild($div);
+		if ( i === 0 ) { // 첫번째 애 셋팅
+			$div.className = 'on';
+			$li.className = 'on';
+			$div.style.backgroundColor = myData.tabItems[i].itemColor;
+			$li.firstChild.style.backgroundColor = myData.tabItems[i].itemColor;
+		}
+	}
+
+	var tabMenuLis = tabMenu.querySelectorAll("li");
+	var tabContentDivs = tabContent.querySelectorAll("div");
+
+
+	// 만약 콜백함수에 전달하고 싶은 인자값이 있다면? 
+	// bind메서드는 기존의 어떤 함수에 새로운 부분을 추가하는 기능과
+	// this를 정해줄 수 있는 기능이 있는데 이중에 this를 정해주는 기능은 지금 필요가 없고(그래서 null줌).
+	// 새로운 부분을 추가하는 기능만을 사용하면 된듯.
+	// 내가 원하는 새로운 부분은 파라미터를 추가하는 것임으로, 3이라는 전달값을 추가했음
+	// 이렇게 하면 전달값을 하나 더 많은 새로운 함수가 반환되어 clickWork에 할당 되고
+	// 우리는 아래처럼 사용 할 수 있게됨.
+	tabMenu.addEventListener('click', clickWork.bind(null, 3) );
+
+	function clickWork(num, ev) {
+		ev.preventDefault();
+		if (ev.target.tagName !== 'A') return;
+		for(var i = 0; i < tabMenuLis.length; i++){
+			tabMenuLis[i].classList.remove('on');
+			tabMenuLis[i].firstChild.style.backgroundColor = ''
+			tabContentDivs[i].classList.remove('on');
+			tabContentDivs[i].style.backgroundColor = '';
+		}
+		console.log(num);
+		// var real = Array.from(tabMenuLis);
+		// var crrNum = real.indexOf(ev.target.parentNode);
+		var crrNum = Array.prototype.indexOf.call(tabMenuLis, ev.target.parentNode)
+		// 진짜 배열로 바꾸지 않고 call메서드로 Array의 indexOf기능을 유사배열에 사용함.
+		
+		tabMenuLis[crrNum].classList.add('on');
+		tabMenuLis[crrNum].firstChild.style.backgroundColor = myData.tabItems[crrNum].itemColor;
+		tabContentDivs[crrNum].classList.add('on');
+		tabContentDivs[crrNum].style.backgroundColor = myData.tabItems[crrNum].itemColor;
+	}
+}
+
+// 확인
+
+// 코드
+
+
+
+</script>
+</body>
+</html>

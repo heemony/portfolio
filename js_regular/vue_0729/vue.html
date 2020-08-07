@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue를 연습해보자아아아아2222</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .error{color:red;}
+        .active{border: 1px solid blue;}
+        .border{border: 3px solid green}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ol>
+            <li v-for="item in tabs">{{item.itemName + " : " + item.itemColor}}</li>
+            <!--item은 for문의 i와 비슷하다-->
+            <li v-for="item in tabs2">{{item.itemName + " : " + item.itemColor}}</li>
+            <!--그리고 이 item변수는 중복해서 각각 쓸 수 있다. -->
+            <li v-for="item in tabs">
+                <span v-for="item in item">{{ item }}</span>
+            </li>
+        </ol>
+
+        <h1>{{ name }}의 소개</h1>
+        <input type="text" v-model="age"/>
+        <p v-if="seen">이제 나를 볼 수 있어요</p>
+        <button v-on:click="rMessage">메시지 입력</button>
+
+
+        <p v-bind:class="{active: isActive, error: hasError}">{{ message }}</p>
+        <p class="heemuyn" v-bind:class="[isActive, hasError]">{{ reMessage }}</p>
+            <!--바인딩된 객체는 인라인일 필요는 없다. -->
+        <p class="heemuyn" v-bind:class="classObj">{{ reMessage1 }}</p>
+            <!--바인딩된 객체는 인라인일 필요는 없는 경우의 코드. -->
+        <p class="heemuyn" v-bind:class="classObject"> {{reMessage2}} </p>
+
+        <img v-bind:src="url" />
+        <button v-on:click="rSize">200</button>
+        <button v-on:click="rSize1">400</button>
+        <button v-on:click="changeSize(300)">300</button>
+        <button v-on:click="changeSize(500)">500</button>
+
+
+        <h1 v-if="awsome === 1">1Vue is Awsome!</h1>
+        <h1 v-else-if="awsome === 2">2Vue is Awsome!</h1>
+        <h1 v-else>No!</h1>
+
+
+        <ul v-bind:class="{border}">
+            <li><p>클릭하면 index i값을 보여줘요!</p></li>
+            <li 
+                v-for="(item, i) in tabs" 
+                v-on:click="work(i, $event)"
+            >{{`${i} ${item.itemName} : ${item.itemColor}`}}</li>
+            <!-- $event 키워드 (js에서 ev같은거) -->
+        </ul>
+        <div>
+            <div v-if="crrNum === 0">1번 컨텐츠</div>
+            <div v-else-if="crrNum === 1">2번 컨텐츠</div>
+            <div v-else>3번 컨텐츠</div>
+        </div>
+
+        <div>
+            <div 
+                v-for="(item, i) in tabs" 
+                v-show="crrNum === i"
+            >{{i+1}}번 컨텐츠</div>
+            <!-- <div v-show="crrNum === 0">1번 컨텐츠</div>
+            <div v-show="crrNum === 1">2번 컨텐츠</div>
+            <div v-show="crrNum === 2">3번 컨텐츠</div> -->
+        </div>
+        <ul>
+            <li 
+                v-for="(item, name) in object" 
+                v-bind:key="i"
+            >{{name + ` : ` +item}}</li>
+             <!--포문 돌릴 때 v-bind:key="i" 습관적으로 해주기. 성능저하 방지. 키값을 알려줌.-->
+        </ul>
+
+        <textarea v-model="eulsoo" name="" id="" cols="30" rows="10">여러가지~~</textarea>
+        <!-- v-model은 양방향 -->
+        <p style="white-space: pre-line;">{{eulsoo}}</p>
+
+        <input 
+            type="checkbox" 
+            id="eul" 
+            v-model="사용여부"
+        />
+        <label for="eul">
+            {{사용여부 ? '사용했음' : '사용안했음'}}
+        </label>
+
+        <input type="checkbox" id="a" value="A" v-model="checkedNames"><label for="a">A</label>
+        <input type="checkbox" id="b" value="B" v-model="checkedNames"><label for="b">B</label>
+        <input type="checkbox" id="c" value="C" v-model="checkedNames"><label for="c">C</label>
+        <p>체크한 이름 : {{ checkedNames }} -> value값을 써줘야한당.</p>
+
+        <select v-model="selected">
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>선택함: {{ selected }}</span>
+
+        <select v-model="selected" multiple>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+        </select>
+        <span>선택함: {{ selected }}</span>
+
+        <select v-model="items">
+            <option  v-for="item in tabs">{{item.itemName}}</option>
+        </select>
+        <span>선택함: {{ items }}</span>
+
+        <select v-model="items" multiple>
+            <option  v-for="item in tabs">{{item.itemName}}</option>
+        </select>
+        <span>선택함: {{ items }}</span>
+
+        <p v-html="name"></p>
+        <p v-text="name"></p> <!--textcontent랑 유사함.-->
+    </div>
+  
+
+
+    <div id="app3">
+        <eulsoo v-for="item in list"></eulsoo> 
+        <h1><span>{{ name }}</span>의 소개</h1>
+        이름:<input type="text" class="v-model" value="eulsoo"/>
+    </div>
+
+    <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+<script>
+    //0807
+    //컴포넌트는 나니아연대기의 장롱과 같다.
+    Vue.component( 'eulsoo', {
+        template: '<li>{{name}}</li>',
+        data(){ // 데이터는 함수여야한다. 
+            return {name: 'eulsoo'} 
+            // 항상 return값을 반환하는 형식으로..
+            // 141의 name과 Vue의 data name과는 다른 name이다. 이름이 같아도 겹치지 않음.
+        }
+    });
+    new Vue({
+        el: '#app3',
+        data: {
+            name: 'eulsoo',
+            list: [0,1,2,3], //루트에 담긴 배열 
+        }
+    })
+    // 2)
+    // const appName = document.querySelector('#app3')
+    // const inputName = appName.querySelector('.v-model')
+    // const spanEl = appName.querySelector('span')
+
+    // const data = {
+    //     get name(){
+    //         return inputName.value;
+    //     },
+    //     set name(str){
+    //         spanEl.textContent = str;
+    //     }
+    // }
+    // spanEl.textContent = data.name;
+    // inputName.addEventListener('keyup', function(e){
+    //     data.name = e.target.value;
+    // })
+
+
+    // // 1) person 상수
+    // const person = {    
+    //     firstName : 'eulsoo',
+    //     lastName : 'jung',
+    //     fullName(){
+    //         return `${this.firstName} ${this.lastName}`;
+    //     },
+    //     writeFullName(name){
+    //         const part = name.split('')
+    //         this.firstName = part[0];
+    //         this.lastName = part[1];
+            
+    //     }
+    // }
+    // person.writeFullName = 'ilbum jung';
+    // console.log(person.fullName());
+   
+        
+    // //0807 이전
+    // const firstVue = new Vue({
+    //     el:'#app', 
+    //     data: {
+    //         items:'',
+    //         selected:'',
+    //         checkedNames: [],
+    //         사용여부: false,
+    //         eulsoo: 'a',
+    //         crrNum: 0,
+    //         classObj: {
+    //             'isActive': true,
+    //             'hasError': true,
+    //         },
+    //         url: '',
+    //         isActive: true,
+    //         hasError: true,
+    //         border: true,
+    //         awsome: 2,
+    //         message: 'class바인딩 예1)',
+    //         reMessage: 'class추가와 class바인딩 예2)',
+    //         reMessage1: '바인딩된 객체는 인라인일 필요없다.',
+    //         reMessage2: 'classObject를 만들어보자.',
+    //         tabs: [
+    //             {itemName:'집', itemColor:'red'},
+    //             {itemName:'학교', itemColor:'yellow'},
+    //             {itemName:'사무실', itemColor:'black'}
+    //         ],
+    //         tabs2: [
+    //             {itemName:'집1', itemColor:'red1'},
+    //             {itemName:'학교1', itemColor:'yellow1'},
+    //             {itemName:'사무실1', itemColor:'black1'}
+    //         ],
+    //         name: '<i>heehee</i>',
+    //         age: 29,
+    //         seen: true,
+    //         error: {
+    //             type: 'fatal'
+    //         },
+    //         object: {
+    //             title: 'how to do lists in Vue',
+    //             author: 'Jane Doe',
+    //             publishedAt: '2020-07-31'
+    //         }
+    //     },
+    //     computed: {// computed는 메서드가 아니라 data처럼 쓰는 것. 대신 가져오려고 할 때 내가 명령한 어떤 수행(함수)을 한다. 그래서 return꼭 필수.
+    //         // seen() {
+    //         // //seen() {} 가능
+    //         // //seen: () => {} arrow function에서 this는 window객체라서 아래와 같이 this를 쓰는 경우에는 쓰면 안된다.
+    //         //     if(this.age > 47){ //age에 접근하려면 this를 써야함.
+    //         //         return false
+    //         //     } else {
+    //         //         return true
+    //         //     }
+    //         // }   
+    //         rMessage() {
+    //             return this.message = this.message.split('').reverse().join('')
+    //         },
+    //         classObject() {
+    //             let a = {
+    //                 active: this.isActive && this.error,
+    //                 'text-danger': this.error && this.error.type === 'fatal'
+    //             }
+    //             return a;
+    //         }
+    //     },
+    //     methods: {
+    //         rMessage() {
+    //             this.message = this.message.split('').reverse().join('')
+    //         },
+    //         //이미지 사이즈 변화시키는데, 변수처리해서 받아서 쓰면 간편하니께... 코드 늘어나지도 않구...
+    //         rSize(){
+    //             this.url = 'http://placehold.it/200x200'
+    //         },
+    //         rSize1() {
+    //             this.url = 'http://placehold.it/400x400'
+    //         },
+    //         changeSize(size){
+    //             this.url = `http://placehold.it/${size}x${size}`
+    //         }, // 변수처리한 사이즈 변화 함수
+    //         work(num, ev){
+    //             this.crrNum = num;
+    //             // 인덱스를 넘겨받음.
+    //             console.log(ev)
+    //             // 이벤트를 감지하여 콘솔에 찍어준다.
+    //         }, 
+
+    //     },
+    // });
+    // console.log(firstVue)
+    // firstVue.seen = true; //console.log(firstVue)찍어보면 data안에 있는 값들이 다 적혀져있음 그래서 ㅇㅇ.ㅇㅇ으로 접근이 가능함.
+    // // firstVue.tabs.push({itemName: '학원', itemColor: 'blue'})
+
+</script>
+</body>
+</html>

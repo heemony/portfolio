@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="utf-8" />
+<title>스크롤 이벤트 0706</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    * {margin:0; padding:0}
+    li {list-style: none;}
+    aside {height:80px; background-color: aqua; text-align:center; line-height: 80px;}
+    header {height:60px; background-color: gray; text-align: center; line-height: 60px;}
+    /* header position의초기값은 static이었다가 on이 붙으면 position:fixed가 된다. 
+    우선순위 : id | class | tag 로 숫자가 붙여짐.*/
+    header {text-align: center;}
+    header.on {position: fixed; top: 0; left:0; right: 0;}
+    header nav {position: relative; display: inline-block; width: 150px; border: 1px solid blue;}
+    header nav > a{border: 1px solid palevioletred;}
+    header nav > ul {display: none; position: absolute; right: 0; left: 0; background-color: white;} /*위드없이 ab주고 le ri 0주면 양쪽으로 펴짐.*/
+    header nav > ul.on {display: block;}
+    section {min-height: 100vh;} /*vh는 뷰포트.*/
+    section.num1 {background-color:lime}
+    /* section.num1 > div{display: none;} */
+    /* section.num1 > div.on{display: block; text-align: center; font-size: 30px;} */
+    section.num2 {background-color:yellow; padding-top: 1px;}
+    section.num2 > p {margin-top: 200px; opacity: 0;} 
+    /* p에 마진탑 주면 이상하게 빈공간이 뚫고 나오는데, num2에 패딩을 주면 사라지게 됨. (overflow히든도 ㄱㅊ)*/
+    section.num2 > p.on {text-align: center; margin-top: 200px; opacity: 1; font-size: 100px; transition: all .2s ease;} 
+    section.num3 {background-color:pink; transition: all 1s ease-in-out;}
+    section.num3.on {background-color: lightblue;}
+    section.num3 > div{width: 100px; height: 100px; opacity: 0; background-color: black; transition: all 1s ease-in-out 1s;}
+    section.num3.on > div {opacity: 1; background-color: lightseagreen;}
+    section.num4 {background-color:blue}
+    body{border: 10px solid black;}
+
+    /* 420이하 */
+    @media screen and (max-width:500px) {
+        body{border: 10px solid yellow;}
+    }
+    /* 421이상 768이하 */
+    @media screen and (min-width:501px) and (max-width: 768px) {
+        body{border: 10px solid red;}
+        .a{display: none;}
+    }
+    /* 769이이상 */
+    @media screen and (min-width:769px) and (max-width: 1200px){
+        body{border: 10px solid blue;}
+        .b{display: none;}
+    }
+
+    
+</style>
+</head>
+
+<body>
+    <aside>광고</aside>
+    <header>
+        <nav>
+            <a href="#">상단메뉴</a>
+            <ul class="menu">
+                <li>MENU1</li>
+                <li>MENU2</li>
+                <li>MENU3</li>
+                <li>MENU4</li>
+            </ul>
+        </nav>
+    </header>
+    <section class="num1">
+        <div class="a">A</div>
+        <div class="b">B</div>
+    </section>
+    <section class="num2"><p>안녕~~~~!!!!!</p></section>
+    <section class="num3"><div></div></section>
+    <section class="num4">집가고싶다</section>
+</body>
+
+<script>
+    window.addEventListener('scroll', scrollWork);
+    window.addEventListener('resize', resizeWork);
+    window.addEventListener('load', resizeWork); //로드 된 순간에 resizework를 하게한다. -스마트폰, 패드    
+    
+    const htmlElem = document.querySelector('html');
+    const headerElem = document.querySelector('header');
+    const yellowPelem = document.querySelector('.num2 > p');
+    const pinkElem = document.querySelector('.num3');
+ 
+    const aInfo = document.querySelector('.a');
+    const bInfo = document.querySelector('.b');
+
+    //const menuBtn = document.querySelector('nav > a'); 
+    const menuBtn = document.querySelector('nav')
+    const menuList = document.querySelector('nav > ul');
+    //menuBtn.addEventListener('click', mobileMenu); -> f resizeWork로 감.
+    //menuBtn.addEventListener('mouseenter', deskMenu);
+
+    //mobileMenu
+    function mobileMenu(e){
+        e.preventDefault(); //'새로고침땜시'e 안넣고 a에 #넣었으면 ㄱㅊ은데 혹시 모르니까 e객체 받고 prevent도 하자.
+        if(menuList.className === ''){
+            menuList.className = 'on';
+        }else {
+            menuList.className = '';
+        }
+    }
+
+    //desktopMenu
+    function deskMenuEnter(){
+        menuList.className = 'on';
+    }
+    function deskMenuLeaves(){
+        menuList.className = '';
+    }
+
+    //리사이즈 넓이와 높이.
+    function resizeWork(){
+        console.log(window.innerWidth);
+        console.log(`넓이는 ${window.innerWidth}px이고, 높이는 ${window.innerHeight}px입니다.`);
+        if(window.innerWidth < 1000){
+            menuBtn.addEventListener('click', mobileMenu);
+            menuBtn.removeEventListener('mouseenter', deskMenuEnter);
+            menuBtn.removeEventListener('mouseleave', deskMenuLeaves);
+            //aInfo.classList.remove('on'); //aInfo.style.display = 'none'
+            //bInfo.classList.add('on');    //bInfo.style.display = 'block'
+        }else if(window.innerWidth >= 1000 ){
+            menuBtn.removeEventListener('click', mobileMenu);
+            menuBtn.addEventListener('mouseenter', deskMenuEnter);
+            menuBtn.addEventListener('mouseleave', deskMenuLeaves);
+            //aInfo.classList.add('on');    //aInfo.style.display = 'block'
+            //bInfo.classList.remove('on'); //bInfo.style.display = 'none'
+            //단순한 css는 미디어쿼리에서 하는게 맞다.
+        }
+    }
+
+    //스크롤 범위에 따라 class 붙여주기.
+    function scrollWork(){
+        console.log(htmlElem.scrollTop);
+        if(htmlElem.scrollTop <= 80){ 
+            headerElem.className = '';
+        }else if(htmlElem.scrollTop > 80 && htmlElem.scrollTop < 490){ 
+            headerElem.className = 'on'; 
+            yellowPelem.className = ''; 
+        }else if(htmlElem.scrollTop > 450 && htmlElem.scrollTop < 1000){
+            console.log('450이상');
+            yellowPelem.className = 'on'; 
+            pinkElem.className = 'num3';
+        }else if(htmlElem.scrollTop > 1250){
+            //pinkElem.className = 'num3 on'; 약간 야매.. 문자열을 붙이는거라서 추가가 아니라 num3이 사라지고 on이 붙어버림
+            pinkElem.classList.add('on');
+            // pinkElem.classList.contains('on'); //확인
+            // pinkElem.classList.remove('on'); //지우기
+            // pinkElem.classList.add('on'); //추가
+        }
+    }
+</script>
+
+</html>

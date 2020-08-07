@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>이벤트</title>
+
+<style>
+* {margin:0; padding: 0;}
+li {list-style: none}
+ul#photo_list {
+	border:2px solid lime; 
+	display: inline-block; 
+	padding: 20px;
+}
+ul#photo_list > li {
+	border:1px solid rgb(153, 0, 255);  
+	float:left; 
+	padding: 20px; 
+	position: relative;
+}
+ul#photo_list > li > a {
+	border:1px solid black;
+	padding: 10px;
+}
+ul#photo_list ul {
+	display: none;
+	background-color: yellow; 
+	position: absolute; 
+	top:40px; 
+	left:0; 
+	width: 100px;
+	padding: 10px;
+	z-index: 100;
+	border:1px solid lime;
+}
+ul#photo_list ul.opened {
+	display: block;
+}
+ul#photo_list ul > li {
+	border:1px solid orange;
+	padding: 5px;
+}
+ul#photo_list ul > li > a {
+	text-decoration: none;
+	border:1px solid black;
+}
+body {padding:30px;}
+</style>
+</head>
+<body>
+
+<ul id="photo_list">
+	<li>
+		<a href="">건물</a>
+		<ul>
+			<li><a href="">남산타워</a></li>
+			<li><a href="">63빌딩</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="">커피</a>
+		<ul>
+			<li><a href="">아메리카노</a></li>
+			<li><a href="">카페라테</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="">불꽃놀이</a>
+		<ul>
+			<li><a href="">한강축제</a></li>
+			<li><a href="">금강축제</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="">장미</a>
+		<!-- <ul>
+			<li><a href="">백장미</a></li>
+			<li><a href="">흑장미</a></li>
+		</ul> -->
+	</li>
+</ul>
+</body>
+
+<script>
+호버메뉴();
+
+function 호버메뉴() {
+	var photo요소 = document.querySelector("#photo_list");
+	var Li요소들 = document.querySelectorAll("#photo_list > li");
+
+	photo요소.addEventListener('mouseover', overWork);
+	photo요소.addEventListener('mouseout', outWork);
+
+	var 열렸던메뉴;
+	function overWork(e){
+		if(e.target.tagName !== 'A') return; //a가 아닌게 참이면 다 제껴라.
+		var 하위메뉴 = e.target.parentNode.querySelector('ul'); //a 아래 ul을 가져왔다.
+		if(하위메뉴){ //어떤 데이터가 들어오던간에 존재만해도 true로 변하기 땜시 써도 된다.
+			하위메뉴.className = 'opened';
+			열렸던메뉴 = 하위메뉴;
+		}
+	}	
+	
+	function outWork(e){
+		// var 하위메뉴 = e.target.parentNode.querySelector('ul');
+		if( !열렸던메뉴 ) return;
+		if( !판단하기(e.relatedTarget) ){ 
+			// console.log(하위메뉴)
+			// 하위메뉴.className = ''; 
+			// 하위메뉴를 닫을게 아니라, 열렸던메뉴를 닫으면 되잖아! 왜? 처음엔 하위메뉴가 없을수밖에 없으니.
+			열렸던메뉴.className = '';
+		}
+	}
+	function 판단하기(도착한곳){
+		if(!도착한곳) return;
+		// 내 가족이 맞으면 true를 줌.
+		// 내 가족이 맞으면 -> 열렸던 메뉴와 도착한 메뉴가 같다면 가족이다.
+		while(도착한곳.tagName !== 'HTML'){
+			if (열렸던메뉴 === 도착한곳){
+				return true;
+			}else{
+				도착한곳 = 도착한곳.parentNode;
+			}
+		}
+		//내가족이 아니면 false
+		return false;
+	}
+}
+</script>
+</html>
+
+
+<!-- 
+// function 호버메뉴() {
+	// 	var photo요소 = document.querySelector("#photo_list");
+	// 	var Li요소들 = document.querySelectorAll("#photo_list > li");
+	
+	// 	for(let i = 0; i < Li요소들.length; i++){
+	// 		Li요소들[i].addEventListener('mouseenter', enterWork);
+	// 		Li요소들[i].addEventListener('mouseleave', leaveWork);
+	// 	}
+	// 	function enterWork(){
+	// 		this.querySelector('ul').className = 'opened';
+	// 	}
+	// 	function leaveWork(){
+	// 		this.querySelector('ul').className = '';
+	// 	}
+	// } -->
+
+
+
+
+

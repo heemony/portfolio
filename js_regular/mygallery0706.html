@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 사진첩 0706</title>
+    <link rel="stylesheet" href="reset.css">
+    <style>
+        *{padding:0; margin:0 ; box-sizing: border-box;}
+        li{list-style: none;}
+        #photo_list{overflow: hidden; width:400px;}
+        #photo_list li{float: left; position:relative;}
+        #photo_list li > a::after{content:''; display: block; border: 0px solid lightblue; position:absolute; top:0; left:0; right:0; bottom:0;}
+        #photo_list li.on > a::after{border: 5px solid lightblue; transition: all 0.3s linear;}
+        /* 가상요소를 만들어서 사진의 축소 없이 보더만 자연스럽게 만들어보자. 사진 위에 보더가 둥실 떠있다. 
+            하고나면 스크립트가 안되는데.. 타겟을 다시 콘솔ㄹ로 찍어서 잘 잡아줘야함.
+        */
+        #photo_list li img{width: 100px;height:80px;vertical-align: top; box-sizing: border-box;}
+     
+    </style>
+</head>
+<body>
+    <div class="photo">
+        <h1>나의 사진첩 0706</h1> 
+        <ul id="photo_list"> 
+            <li><a href="아카이브/bigben.jpg" title="멋진 건물"><img src="아카이브/bigben.jpg" alt=""></a></li> 
+            <li><a href="아카이브/coffee.jpg" title="향기로운 커피"><img src="아카이브/coffee.jpg" alt=""></a></li>
+            <li><a href="아카이브/fireworks.jpg" title="화려한 불꽃놀이"><img src="아카이브/fireworks.jpg" alt=""></a></li> 
+            <li><a href="아카이브/rose.jpg" title="아름다운 장미"><img src="아카이브/rose.jpg" alt=""></a></li> 
+        </ul>
+    </div>
+	<!-- <img id="placeholder" src="http://placehold.it/400x300"/>
+	<p id="desc">사진 설명입니다.</p> -->
+</body>
+<script>
+    //리스너를 붙일 노드를 찾는다.
+    //리스너를 붙인다.
+    //할 일 함수만들고
+    //클릭이 일어나면 target title의 정보를 get
+    //get정보를 설명노드에 준다.
+    
+    const photo = document.querySelector('.photo');
+    const photoList = document.querySelector('#photo_list');
+    const liElems = document.querySelectorAll('#photo_list > li');
+
+    const imgBox = document.createElement("img");
+    imgBox.src = 'http://placehold.it/400x300'; //기본 이미지 
+    photo.appendChild(imgBox);
+
+    const descNode = document.createElement("p");
+    descNode.textContent = '사진 설명입니다.'; //기본 텍스트
+    photo.appendChild(descNode);
+
+    
+    photoList.addEventListener('click', clickWork);    
+    function clickWork(e){
+        e.preventDefault();
+        console.log(e); //moust event 
+        console.log(e.target.title); // a.title
+        console.log(e.target.firstChild); // <img> 
+        for(let i = 0 ;  i < liElems.length ; i++){
+            liElems[i].className = '';
+        }
+        e.target.parentNode.className = 'on';
+        descNode.textContent = e.target.title;
+        imgBox.src = e.target.firstChild.src;
+        
+    }
+
+</script>
+</html>

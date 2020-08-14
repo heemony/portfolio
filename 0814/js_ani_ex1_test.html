@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>이벤트</title>
+
+<style>
+.ani_target {
+    position: absolute;
+    width:100px;
+    height:100px;
+    background-color: aqua;
+    margin-top: 100px;
+}
+</style>
+</head>
+<body>
+    <div class="ani_target"></div>
+    <button class="stop">stop</button>
+    <button class="start">start</button>
+</body>
+
+<script>
+    // // 재귀함수
+    // const target = document.querySelector('.ani_target');
+    // let pos = 0;
+    // ani(); //trigger
+    // function ani(){ //얘를 다시 실행해주거든~
+    //     pos += 100; 
+    //     target.style.top = pos + 'px';
+    //     setTimeout(function(){
+    //         ani(); //재귀함수가~
+    //     }, 1000);
+    // }
+
+
+    // // setInterval은 메모리를 많이 차지하지 않는다.
+    // const target = document.querySelector('.ani_target');
+    // const stopBtn = document.querySelector('.stop');
+    // const startBtn = document.querySelector('.start');
+
+    // stopBtn.addEventListener('click', stopWork)
+    // startBtn.addEventListener('click', startWork)
+
+    // let hee;
+
+    // function stopWork(){
+    //     clearInterval(hee);
+    // }
+    // function startWork(){
+    //     hee = setInterval(() => {
+    //         pos += 1; 
+    //         target.style.top = pos + 'px';
+    //     }, 15);
+    // }
+
+    // let pos = 0;
+
+
+    // requestAnumationFrame(실행시킬 자신을 담는다.) 16ms마다 반복되는 애니메이션함수
+    const target = document.querySelector('.ani_target');
+    const stopBtn = document.querySelector('.stop');
+    const startBtn = document.querySelector('.start');
+
+    stopBtn.addEventListener('click', stopWork)
+    startBtn.addEventListener('click', startWork)
+    
+    let pos = 0;
+    let hee;
+    function stopWork(){
+        cancelAnimationFrame(hee)
+    }
+    function startWork(){
+        pos += 10;
+        target.style.left = pos + 'px';
+    
+        if(pos > 500){
+            cancelAnimationFrame(hee)
+        }
+         else {
+             hee = requestAnimationFrame(startWork)
+        } //반드시 재귀함수.
+
+        
+    }
+
+</script>
+</html>
+

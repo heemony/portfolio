@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>이벤트</title>
+
+<style>
+* {margin:0; padding: 0;}
+li {list-style: none}
+ul#photo_list {
+	border:2px solid lime; 
+	display: inline-block; 
+	padding: 20px;
+}
+ul#photo_list > li {
+	border:1px solid orange;  
+	float:left; 
+	padding: 20px; 
+	position: relative;
+}
+ul#photo_list > li > a {
+	border:1px solid black;
+	padding: 10px;
+}
+ul#photo_list ul {
+	display: none;
+	background-color: yellow; 
+	width: 100px;
+	padding:0 10px;
+	z-index: 100;
+	border:1px solid lime;
+	position: absolute; 
+	top:40px; 
+	left:0;
+	transition: all 1s ease;
+}
+ul#photo_list ul.closed {
+	animation: closed 1s ease 1;
+	/* opacity: 1;js로 대체 */
+}
+ul#photo_list ul.opened {
+	animation: opened 1s ease 1;
+	/* opacity: 1;js로 대체 */
+}
+@keyframes closed{
+	0%{
+		opacity: 1;
+	}
+	100%{
+		opacity: 0;
+	}
+}
+@keyframes opened{
+	0%{
+		opacity: 0;
+	}
+	100%{
+		opacity: 1;
+	}
+}
+ul#photo_list ul > li {
+	border:1px solid orange;
+	padding: 5px;
+}
+ul#photo_list ul > li > a {
+	text-decoration: none;
+	border:1px solid black;
+}
+body {padding:30px;}
+</style>
+</head>
+<body>
+
+<ul id="photo_list">
+	<li>
+		<a href="">건물</a>
+		<ul>
+			<li><a href="">남산타워</a></li>
+			<li><a href="">63빌딩</a></li>
+			<li><a href="">63빌딩</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="">커피</a>
+		<ul>
+			<li><a href="">아메리카노</a></li>
+			<li><a href="">카페라테</a></li>
+			<li><a href="">카페라테</a></li>
+			<li><a href="">카페라테</a></li>
+			<li><a href="">카페라테</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="">불꽃놀이</a>
+		<ul>
+			<li><a href="">한강축제</a></li>
+			<li><a href="">금강축제</a></li>
+		</ul>
+	</li>
+	<li>
+		<a href="">장미</a>
+	</li>
+</ul>
+</body>
+
+<script>
+	const ulElem = document.querySelector('#photo_list');
+	ulElem.addEventListener('click', 클릭메뉴)
+
+
+
+	//클릭메뉴();
+	//fade in, fade out
+	function 클릭메뉴(ev){
+		ev.preventDefault();
+		if(ev.target.tagName !== 'A') return;
+		let sub = ev.target.parentNode.querySelector('ul')
+		if(!sub) return;
+
+		if(sub.className === 'opened'){ //닫기.
+			sub.className = 'closed'; //닫기후
+			setTimeout(()=>{
+				sub.style.display = 'none';
+			} ,1000) 
+		}else{ //열기.
+			sub.className = 'closed';  // 열기전) 
+			sub.style.display = 'block'; 
+			sub.className = 'opened'; // 열기전) display: block;을 줘서 후장면을 만듦.
+	}
+
+
+
+</script>
+</html>
+
+
+
+
+
